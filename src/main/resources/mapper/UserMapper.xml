@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcxy.tces.mapper.UserMapper">
+
+    <resultMap id="userMap" type="com.gcxy.tces.entity.User">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_password" property="userPass"/>
+        <result column="user_type" property="userType"/>
+        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz"
+                    resultMap="clazzMap">
+        </collection>
+    </resultMap>
+
+    <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
+        <id column="clazz_id" property="clazzId"/>
+        <result column="clazz_name" property="clazzName"/>
+        <association property="department" javaType="com.gcxy.tces.entity.Department">
+            <id column="depart_id" property="deptId"></id>
+            <result column="depart_name" property="deptName"></result>
+        </association>
+
+    </resultMap>
+
+    <select id="selectAllUsers" resultMap="userMap">
+         select * from user u join user_clazz uc on u.user_ID = uc.user_ID
+         join clazz c2 on uc.Clazz_ID = c2.Clazz_ID
+    </select>
+
+    <insert id="insertUser">
+        insert into user(user_name, user_password, user_type)
+        values (#{userName},#{userPass},#{userType})
+    </insert>
+</mapper>

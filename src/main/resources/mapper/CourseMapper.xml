@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gcxy.tces.mapper.CourseMapper">
+    <!--课程映射-->
+    <resultMap id="courseMap" type="com.gcxy.tces.entity.Course">
+        <id property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+    </resultMap>
+
+    <!--课程嵌套教师映射-->
+    <resultMap id="courseNestedUserMap" type="com.gcxy.tces.entity.Course">
+        <id property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <collection property="userList" ofType="com.gcxy.tces.entity.User" javaType="list">
+            <id property="userId" column="user_id"/>
+            <result property="userName" column="user_name"/>
+        </collection>
+    </resultMap>
+
+    <!--查询所有课程-->
+    <select id="selectAllCourses" resultMap="courseMap">
+        select Course_ID, Course_name from course
+    </select>
+
+    <!--根据id查询课程-->
+    <select id="selectCourseById" resultMap="courseNestedUserMap">
+        select c.Course_ID, c.Course_name, u.user_ID, u.user_Name
+        from course c
+        left join user_course uc on c.Course_ID = uc.Course_ID
+        left join `user` u on uc.user_ID = u.user_ID
+        where Course_ID = #{courseId}
+    </select>
+
+    <!--根据关键字查询课程-->
+    <select id="selectCoursesByKey" resultMap="courseMap">
+        select Course_ID, Course_name from course where Course_name like %#{key}%
+    </select>
+
+    <!--插入课程-->
+    <insert id="insertCourse">
+        insert into course(Course_name) values (#{courseName})
+    </insert>
+
+    <!--更新课程-->
+    <update id="updateCourseById">
+        update course set Course_name = #{courseName} where course_id = #{courseId}
+    </update>
+
+    <!--删除课程-->
+    <delete id="deleteCourseById">
+        delete from course where Course_ID = #{courseId}
+    </delete>
+</mapper>
