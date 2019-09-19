@@ -8,6 +8,7 @@
         <id property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="userType" column="user_type"/>
+        <result property="userCode" column="user_code"/>
     </resultMap>
 
     <!--学生嵌套班级映射-->
@@ -15,6 +16,7 @@
         <id property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="userType" column="user_type"/>
+        <result property="userCode" column="user_code"/>
         <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz" javaType="list">
             <id property="clazzId" column="clazz_id"/>
             <result property="clazzName" column="clazz_name"/>
@@ -23,18 +25,18 @@
 
     <!--查询所有学生-->
     <select id="selectAllStudents" resultMap="studentMap">
-        select user_ID, user_Name, user_type from `user` where user_type = 0
+        select user_ID, user_Name, user_type, user_code from `user` where user_type = 0
     </select>
 
     <!--根据关键字模糊查询学生-->
     <select id="selectStudentsByKey" resultMap="studentMap">
-        select user_ID, user_Name, user_type from `user`
+        select user_ID, user_Name, user_type, user_code from `user`
         where user_type = 0 and user_name like CONCAT('%',#{key},'%')
     </select>
 
     <!--根据id查询学生信息-->
     <select id="selectStudentById" resultMap="studentNestedClazzMap">
-        select u.user_ID, u.user_Name, u.user_type, c.Clazz_ID, c.Clazz_name
+        select u.user_ID, u.user_Name, u.user_type, u.user_code, c.Clazz_ID, c.Clazz_name
         from `user` u
         left join user_clazz uc on u.user_ID = uc.user_ID
         left join clazz c on uc.Clazz_ID = c.Clazz_ID
@@ -43,12 +45,14 @@
 
     <!--插入学生纪录-->
     <insert id="insertStudent">
-        insert into `user`(user_Name, user_Password, user_type) values (#{userName},#{userPass},#{userType})
+        insert into `user`(user_Name, user_Password, user_type, user_sex, user_code)
+        values (#{userName},#{userPass},#{userType},#{userSex},#{userCode})
     </insert>
 
     <!--修改学生信息-->
     <update id="updateStudentById">
-        update `user` set user_Name = #{userName}, user_password = #{userPass}
+        update `user`
+        set user_Name = #{userName}, user_password = #{userPass}, user_code = #{userCode}, user_sex = #{userSex}
         where user_id = #{userId}
     </update>
 
@@ -56,4 +60,25 @@
     <delete id="deleteStudentById">
         delete from user where user_ID = #{stuId}
     </delete>
+
+    <!--插入用户班级关联关系-->
+    <insert id="insertUserClazz">
+        insert into user_clazz(user_ID, Clazz_ID) VALUES (#{userId}, #{clazzId})
+    </insert>
+
+    <!--根据学号查询用户id-->
+    <select id="selectUserIdByCode" resultMap="studentMap">
+        select user_ID from user where user_code = #{userCode} and user_type = 0
+    </select>
+
+    <!--根据班级名查询班级id-->
+    <select id="selectClazzIdByName" resultMap="clazzMap">
+        select Clazz_ID from clazz where Clazz_name = #{clazzName}
+    </select>
+
+    <!--班级映射-->
+    <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
+        <id property="clazzId" column="clazz_id"/>
+        <result property="clazzName" column="clazz_name"/>
+    </resultMap>
 </mapper>

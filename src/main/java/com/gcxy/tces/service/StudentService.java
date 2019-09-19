@@ -1,9 +1,11 @@
 package com.gcxy.tces.service;
 
+import com.gcxy.tces.common.easyexcel.StudentData;
 import com.gcxy.tces.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rain
@@ -51,4 +53,6 @@ public interface StudentService {
      * @return
      */
     boolean removeStudentById(String stuId);
+
+    void saveBatchStudent(List<User> dataList);
 }

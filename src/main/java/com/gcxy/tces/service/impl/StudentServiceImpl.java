@@ -3,15 +3,14 @@ package com.gcxy.tces.service.impl;
 import com.gcxy.tces.entity.User;
 import com.gcxy.tces.mapper.StudentMapper;
 import com.gcxy.tces.service.StudentService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
  */
 @Service
 public class StudentServiceImpl implements StudentService {
-    private static final Logger logger = LogManager.getLogger(StudentServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Autowired
     private DataSourceTransactionManager transactionManager;
@@ -47,8 +46,8 @@ public class StudentServiceImpl implements StudentService {
     @Transactional()
     public boolean saveStudent(User user) {
         int rs = studentMapper.insertStudent(user);
-        logger.debug("######StudentService.saveStudent######");
-        logger.debug("save operation result: " + rs);
+        LOGGER.debug("######StudentService.saveStudent######");
+        LOGGER.debug("save operation result: " + rs);
         return true;
     }
 
@@ -56,8 +55,8 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(rollbackFor = Exception.class)
     public boolean updateStudentById(User user) {
         int rs = studentMapper.updateStudentById(user);
-        logger.debug("######StudentService.saveStudent######");
-        logger.debug("update operation result: " + rs);
+        LOGGER.debug("######StudentService.saveStudent######");
+        LOGGER.debug("update operation result: " + rs);
         return true;
     }
 
@@ -73,8 +72,8 @@ public class StudentServiceImpl implements StudentService {
             //执行db操作
             int rs = studentMapper.deleteStudentById(stuId);
             int rs1 = studentMapper.deleteStudentById("c");
-            logger.debug("######StudentService.saveStudent######");
-            logger.debug("remove operation result: " + rs);
+            LOGGER.debug("######StudentService.saveStudent######");
+            LOGGER.debug("remove operation result: " + rs);
             if(rs <= 0 || rs1 <= 0){
                 throw new RuntimeException();
             }
@@ -88,6 +87,62 @@ public class StudentServiceImpl implements StudentService {
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveBatchStudent(List<User> dataList) {
+        for(User data : dataList){
+            //处理用户信息
+            processUserInfo(data);
+            //插入数据库
+            studentMapper.insertStudent(data);
+
+            //插入学生班级关联关系
+            String userId = studentMapper.selectUserIdByCode(data.getUserCode()).getUserId();
+            String clazzId = studentMapper.selectClazzIdByName(data.getClazz()).getClazzId();
+            studentMapper.insertUserClazz(userId, clazzId);
+
+        }
+    }
+
+    /**
+     * 处理用户信息，转化成数据库定义格式
+     * @param data User
+     */
+    private void processUserInfo(User data){
+        /**
+         * 处理用户性别
+         */
+        if(data.getUserSex().equals("男")){
+            data.setUserSex("1");
+        } else if(data.getUserSex().equals("女")){
+            data.setUserSex("0");
+        } else {
+            throw new RuntimeException("性别数据异常");
+        }
+
+        /**
+         * 处理用户类型
+         */
+        if(data.getUserType().equals("学生")){
+            data.setUserType("0");
+        } else if(data.getUserType().equals("教师")){
+            data.setUserType("1");
+        } else if(data.getUserType().equals("管理员")){
+            data.setUserType("2");
+        } else {
+            throw new RuntimeException("用户类别数据异常");
+        }
+
+        //设置初始密码
+        data.setUserPass("123456");
+
+        //处理学号
+        String subCode = data.getUserCode().substring(0, data.getUserCode().length() - 2);
+        LOGGER.debug("subCode: {}", subCode);
+        data.setUserCode(subCode);
+
     }
 
 }

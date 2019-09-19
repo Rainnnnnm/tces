@@ -1,14 +1,24 @@
 package com.gcxy.tces.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+
 import java.util.List;
 
 public class User {
     private String userId;
+    @ExcelProperty("姓名")
     private String userName;
     private String userPass;
+    @ExcelProperty("用户类别")
     private String userType;
     private List<Clazz> clazzList;
     private List<Course> courseList;
+    @ExcelProperty("性别")
+    private String userSex;
+    @ExcelProperty("学号")
+    private String userCode;
+    @ExcelProperty("班级")
+    private String clazz;
 
     public List<Course> getCourseList() {
         return courseList;
@@ -56,5 +66,29 @@ public class User {
 
     public void setClazzList(List<Clazz> clazzList) {
         this.clazzList = clazzList;
+    }
+
+    public String getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
+    }
+
+    public String getClazz() {
+        return clazz;
     }
 }
