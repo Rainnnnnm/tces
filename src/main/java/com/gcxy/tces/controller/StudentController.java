@@ -1,19 +1,17 @@
 package com.gcxy.tces.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.gcxy.tces.common.easyexcel.DemoData;
-import com.gcxy.tces.common.easyexcel.DemoDataListener;
 import com.gcxy.tces.common.easyexcel.FileUploadListener;
-import com.gcxy.tces.common.easyexcel.StudentData;
 import com.gcxy.tces.entity.User;
 import com.gcxy.tces.service.StudentService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,69 +26,114 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @RequestMapping("/studentList")
+    /**
+     * 分页查询所有用户
+     * @param pageNum 页号
+     * @param pageSize 页面大小
+     */
+    @RequestMapping("/all")
     @ResponseBody
-    public List<User> getStudentList(){
-        return studentService.getAllUsers();
+    public PageInfo<User> getStudentList(String pageNum, String pageSize){
+        return studentService.getAllUsers(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
     }
 
-    @RequestMapping("/studentByKey")
+    @RequestMapping("/search")
     @ResponseBody
-    public List<User> getStudentByKey(String key){
-        return studentService.getStudentsByKey(key);
+    public PageInfo<User> getStudentByKey(String key, String pageNum, String pageSize){
+        int num = Integer.parseInt(pageNum);
+        int size = Integer.parseInt(pageSize);
+        List<User> users = studentService.getStudentsByKey(key, num, size);
+
+        //把list包装成一个PageInfo返回给前端数据
+        return new PageInfo<>(users);
     }
 
-    @RequestMapping("/studentById")
+    /**
+     * 查看一个学生的详细信息
+     * @param uid 学生id
+     */
+    @RequestMapping("/describe")
     @ResponseBody
     public User getStudentById(String uid){
         return studentService.getStudentById(uid);
     }
 
-    @RequestMapping("/saveStudent")
+    /**
+     *限制POST请求访问
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Boolean> saveStudent(User user){
-        Map<String, Boolean> resultMap = new HashMap<>();
+    public Map<String, Object> saveStudent(User user){
+        Map<String, Object> resultMap = new HashMap<>();
         boolean rs = studentService.saveStudent(user);
-        resultMap.put("result", rs);
+
+        if(rs){
+            resultMap.put("status", 200);
+            resultMap.put("data", "用户添加成功");
+        }else{
+            resultMap.put("status", 500);
+            resultMap.put("data", "用户添加失败");
+        }
+
         return resultMap;
     }
 
 
-    @RequestMapping("/removeStudent")
+    @RequestMapping("/delete")
     @ResponseBody
-    public Map<String, Boolean> removeStudent(String uid){
-        Map<String, Boolean> resultMap = new HashMap<>();
+    public Map<String, Object> removeStudent(String uid){
+        Map<String, Object> resultMap = new HashMap<>();
         boolean rs = studentService.removeStudentById(uid);
-        resultMap.put("result", rs);
-        //resultMap.put("message", "");
+
+        if(rs){
+            resultMap.put("status", 200);
+            resultMap.put("data", "用户删除成功");
+        }else{
+            resultMap.put("status", 500);
+            resultMap.put("data", "用户删除失败");
+        }
+
         return resultMap;
     }
 
-    @RequestMapping("/updateStudent")
+
+    /**
+     *限制为POST请求访问
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Boolean> updateStudent(User user){
-        Map<String, Boolean> resultMap = new HashMap<>();
+    public Map<String, Object> updateStudent(User user){
+        Map<String, Object> resultMap = new HashMap<>();
         boolean rs = studentService.updateStudentById(user);
-        resultMap.put("result", rs);
+
+        if(rs){
+            resultMap.put("status", 200);
+            resultMap.put("data", "用户更新成功");
+        }else{
+            resultMap.put("status", 500);
+            resultMap.put("data", "用户更新失败");
+        }
+
         return resultMap;
     }
 
     /**
      * 解析excel
+     * 接收post请求
      * @param file excel
      * @return map
      */
-    @RequestMapping("/file/upload")
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> uploadFile(MultipartFile file) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             //解析excel表格
             EasyExcel.read(file.getInputStream(), User.class, new FileUploadListener(studentService)).sheet().doRead();
-            resultMap.put("status", 1);
+            resultMap.put("status", 200);
             resultMap.put("data", "表格解析成功");
         } catch (Exception e) {
-            resultMap.put("status", -1);
+            resultMap.put("status", 500);
             resultMap.put("data", "表格解析失败");
             e.printStackTrace();
         }

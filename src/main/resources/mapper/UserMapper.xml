@@ -8,18 +8,17 @@
         <id column="user_id" property="userId"/>
         <result column="user_name" property="userName"/>
         <result column="user_password" property="userPass"/>
+        <result property="userCode" column="user_code"/>
+        <result property="userSex" column="user_sex"/>
         <result column="user_type" property="userType"/>
-        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz"
-                    resultMap="clazzMap">
-        </collection>
     </resultMap>
 
     <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
         <id column="clazz_id" property="clazzId"/>
         <result column="clazz_name" property="clazzName"/>
         <association property="department" javaType="com.gcxy.tces.entity.Department">
-            <id column="depart_id" property="deptId"></id>
-            <result column="depart_name" property="deptName"></result>
+            <id column="depart_id" property="deptId"/>
+            <result column="depart_name" property="deptName"/>
         </association>
 
     </resultMap>
@@ -33,4 +32,8 @@
         insert into user(user_name, user_password, user_type)
         values (#{userName},#{userPass},#{userType})
     </insert>
+
+    <select id="selectUserByCode" resultMap="userMap">
+        select * from user where user_code = #{userCode}
+    </select>
 </mapper>

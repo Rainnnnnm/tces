@@ -26,6 +26,21 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!--配置PageHelper分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!--使用下面的方式配置参数，一行配置一个 -->
+                        <!--helperDialect指定分页插件使用的数据库方言，默认自动检测-->
+                        <!--reasonable=true 开启分页优化，页号超过边界时进行自动校正，默认false关闭-->
+                        <value>
+                            reasonable=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
 
     <!--配置mapper层扫描，扫描mapper接口，-->

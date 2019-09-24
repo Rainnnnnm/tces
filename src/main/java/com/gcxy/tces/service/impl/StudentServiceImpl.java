@@ -1,8 +1,13 @@
 package com.gcxy.tces.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
+import com.gcxy.tces.entity.Course;
 import com.gcxy.tces.entity.User;
 import com.gcxy.tces.mapper.StudentMapper;
 import com.gcxy.tces.service.StudentService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +33,16 @@ public class StudentServiceImpl implements StudentService {
     private StudentMapper studentMapper;
 
     @Override
-    public List<User> getAllUsers() {
-        return studentMapper.selectAllStudents();
+    public PageInfo<User> getAllUsers(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        //返回的list是Page类型
+        List<User> users = studentMapper.selectAllStudents();
+        return new PageInfo<>(users);
     }
 
     @Override
-    public List<User> getStudentsByKey(String key) {
+    public List<User> getStudentsByKey(String key, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         return studentMapper.selectStudentsByKey(key);
     }
 
@@ -43,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @Transactional()
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveStudent(User user) {
         int rs = studentMapper.insertStudent(user);
         LOGGER.debug("######StudentService.saveStudent######");
@@ -71,12 +80,8 @@ public class StudentServiceImpl implements StudentService {
         try{
             //执行db操作
             int rs = studentMapper.deleteStudentById(stuId);
-            int rs1 = studentMapper.deleteStudentById("c");
             LOGGER.debug("######StudentService.saveStudent######");
             LOGGER.debug("remove operation result: " + rs);
-            if(rs <= 0 || rs1 <= 0){
-                throw new RuntimeException();
-            }
         } catch (Exception e) {
             //回滚事务
             transactionManager.rollback(status);
@@ -89,6 +94,10 @@ public class StudentServiceImpl implements StudentService {
         return flag;
     }
 
+    /**
+     * excel批量导入
+     * @param dataList 解析生成的数据列表
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveBatchStudent(List<User> dataList) {
@@ -111,8 +120,8 @@ public class StudentServiceImpl implements StudentService {
      * @param data User
      */
     private void processUserInfo(User data){
-        /**
-         * 处理用户性别
+        /*
+          处理用户性别
          */
         if(data.getUserSex().equals("男")){
             data.setUserSex("1");
@@ -122,8 +131,8 @@ public class StudentServiceImpl implements StudentService {
             throw new RuntimeException("性别数据异常");
         }
 
-        /**
-         * 处理用户类型
+        /*
+          处理用户类型
          */
         if(data.getUserType().equals("学生")){
             data.setUserType("0");
@@ -135,8 +144,11 @@ public class StudentServiceImpl implements StudentService {
             throw new RuntimeException("用户类别数据异常");
         }
 
-        //设置初始密码
-        data.setUserPass("123456");
+        //设置初始密码,使用md5加密
+        String md5 = SecureUtil.md5("123456");
+        //使用两次md5加密
+        data.setUserPass(SecureUtil.md5(md5));
+        LOGGER.debug("double encode by md5: {}", md5);
 
         //处理学号
         String subCode = data.getUserCode().substring(0, data.getUserCode().length() - 2);

@@ -1,6 +1,7 @@
 package com.gcxy.tces.mapper;
 
 import com.gcxy.tces.entity.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +14,10 @@ import java.util.List;
 public interface UserMapper {
     List<User> selectAllUsers();
     int insertUser(User user);
+
+    /**
+     * 登录
+     * @param userCode 账号
+     */
+    User selectUserByCode(@Param("userCode") String userCode);
 }

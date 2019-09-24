@@ -3,6 +3,7 @@ package com.gcxy.tces.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 /**
  * @author Rain
  * @date 2019/9/17
@@ -20,4 +21,5 @@ public class ViewController {
     public String getFileUploadView(){
         return "fileupload";
     }
+
 }

@@ -9,14 +9,14 @@ public class Clazz {
     private String clazzId;
     private String clazzName;
     private Department department;
-    private List<User> user;
+    private List<User> userList;
 
     public List<User> getUser() {
-        return user;
+        return userList;
     }
 
     public void setUser(List<User> user) {
-        this.user = user;
+        this.userList = user;
     }
 
     public String getClazzId() {

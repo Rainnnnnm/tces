@@ -1,6 +1,7 @@
 package com.gcxy.tces.service;
 
 import com.gcxy.tces.entity.Course;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface CourseService {
      * 查询所有课程信息
      * @return
      */
-    List<Course> getAllCourses();
+    PageInfo<Course> getAllCourses(int pageNum, int pageSize);
 
     /**
      * 根据id查询该课程

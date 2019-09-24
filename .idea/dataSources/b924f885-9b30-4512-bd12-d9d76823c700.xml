@@ -1167,7 +1167,7 @@
     </column>
     <column id="291" parent="253" name="user_Name">
       <Position>2</Position>
-      <DataType>varchar(6)|0s</DataType>
+      <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="292" parent="253" name="user_Password">
@@ -1175,84 +1175,100 @@
       <DataType>varchar(8)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="253" name="user_type">
+    <column id="293" parent="253" name="user_sex">
       <Position>4</Position>
-      <Comment>用户类型</Comment>
-      <DataType>tinyint(4)|0s</DataType>
+      <Comment>用户性别，1男生、0女生</Comment>
+      <DataType>char(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="294" parent="253" name="PRIMARY">
+    <column id="294" parent="253" name="user_type">
+      <Position>5</Position>
+      <Comment>用户类型，0学生、1老师、2管理员</Comment>
+      <DataType>tinyint(3)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="295" parent="253" name="user_code">
+      <Position>6</Position>
+      <Comment>学号</Comment>
+      <DataType>varchar(10)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="296" parent="253" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="295" parent="254" name="user_ID">
+    <column id="297" parent="254" name="user_ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="254" name="Clazz_ID">
+    <column id="298" parent="254" name="Clazz_ID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="297" parent="254" name="FK_user_clazz2">
+    <index id="299" parent="254" name="FK_user_clazz2">
       <ColNames>Clazz_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="298" parent="254" name="PRIMARY">
+    <key id="300" parent="254" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_ID
 Clazz_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="299" parent="254" name="FK_user_clazz">
+    <foreign-key id="301" parent="254" name="FK_user_clazz">
       <ColNames>user_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>user_ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="300" parent="254" name="FK_user_clazz2">
+    <foreign-key id="302" parent="254" name="FK_user_clazz2">
       <ColNames>Clazz_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>clazz</RefTableName>
       <RefColNames>Clazz_ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="301" parent="255" name="user_ID">
+    <column id="303" parent="255" name="user_ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="255" name="Course_ID">
+    <column id="304" parent="255" name="Course_ID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="303" parent="255" name="FK_user_course2">
+    <index id="305" parent="255" name="FK_user_course2">
       <ColNames>Course_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="304" parent="255" name="PRIMARY">
+    <key id="306" parent="255" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_ID
 Course_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="305" parent="255" name="FK_user_course">
+    <foreign-key id="307" parent="255" name="FK_user_course">
       <ColNames>user_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>user_ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="306" parent="255" name="FK_user_course2">
+    <foreign-key id="308" parent="255" name="FK_user_course2">
       <ColNames>Course_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>course</RefTableName>
       <RefColNames>Course_ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
   </database-model>
 </dataSource>

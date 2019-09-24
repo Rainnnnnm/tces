@@ -45,7 +45,7 @@
         <!--<mvc:interceptor>-->
             <!--&lt;!&ndash;拦截全部路径&ndash;&gt;-->
             <!--<mvc:mapping path="/**"/>-->
-            <!--<bean class="com.lh.interceptor.AuthInterceptor"/>-->
+            <!--<bean class="com.gcxy.tces.common.interceptor.AuthInterceptor"/>-->
         <!--</mvc:interceptor>-->
     <!--</mvc:interceptors>-->
 

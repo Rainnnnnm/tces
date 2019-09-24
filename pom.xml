@@ -73,11 +73,12 @@
         </dependency>
 
         <!--导入jdbc-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.45</version>
-        </dependency>
+        <!--交给tomcat管理jdbc驱动-->
+        <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<version>5.1.45</version>-->
+        <!--</dependency>-->
 
         <!--导入spring，springMVC依赖-->
         <dependency>
@@ -262,6 +263,20 @@
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
             <version>2.0.0-beta6</version>
+        </dependency>
+
+        <!--导入mybatis分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.10</version>
+        </dependency>
+
+        <!--hutool工具类-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.6.7</version>
         </dependency>
 
     </dependencies>

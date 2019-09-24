@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcxy.tces.mapper.DepartmentMapper">
+    
+    <!--院系映射-->
+    <resultMap id="deptMap" type="com.gcxy.tces.entity.Department">
+        <id property="deptId" column="depart_id"/>
+        <result property="deptName" column="depart_name"/>
+    </resultMap>
+
+    <!--院系嵌套班级映射-->
+    <resultMap id="deptNestedClazz" type="com.gcxy.tces.entity.Department">
+        <id property="deptId" column="depart_id"/>
+        <result property="deptName" column="depart_name"/>
+        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz" javaType="list">
+            <id property="clazzId" column="clazz_id"/>
+            <result property="clazzName" column="clazz_name"/>
+        </collection>
+    </resultMap>
+    
+    <select id="selectAllDepts" resultMap="deptMap">
+        select * from department
+    </select>
+
+    <select id="selectDeptsByKey" resultMap="deptMap">
+        select * from department where depart_name like concat('%',#{key},'%')
+    </select>
+
+
+    <select id="selectDeptById" resultMap="deptNestedClazz">
+        select d.depart_id, d.depart_name, c.Clazz_name, Clazz_ID
+        from department d
+        left join clazz c on d.depart_id = c.depart_id
+        where d.depart_id = #{did}
+    </select>
+
+    <insert id="insertDept">
+        insert into department(depart_name) values (#{deptName})
+    </insert>
+
+    <update id="updateDeptById">
+        update department set depart_name = #{deptName} where depart_id = #{deptId}
+    </update>
+
+    <delete id="deleteDeptById">
+        delete from department where depart_id = #{did}
+    </delete>
+    
+
+
+</mapper>

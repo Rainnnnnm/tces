@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcxy.tces.mapper.TeacherMapper">
+
+    <!--教师映射-->
+    <resultMap id="teacherMap" type="com.gcxy.tces.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userType" column="user_type"/>
+        <result property="userCode" column="user_code"/>
+    </resultMap>
+
+    <!--教师嵌套班级映射-->
+    <resultMap id="teacherNestedClazzMap" type="com.gcxy.tces.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userType" column="user_type"/>
+        <result property="userCode" column="user_code"/>
+        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz" javaType="list">
+            <id property="clazzId" column="clazz_id"/>
+            <result property="clazzName" column="clazz_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectAllTeachers" resultMap="teacherMap">
+        select user_ID, user_Name, user_sex, user_type, user_code
+          from user
+          where user_type = 1
+    </select>
+
+    <select id="selectTeachersByKey" resultMap="teacherMap">
+        select user_ID, user_Name, user_sex, user_type, user_code
+          from user
+          where user_name like concat('%',#{key},'%') and user_type = 1
+    </select>
+
+    <select id="selectTeacherById" resultMap="teacherNestedClazzMap">
+        select u.user_ID, u.user_Name, u.user_type, u.user_code, c.Clazz_ID, c.Clazz_name
+        from user u
+        left join user_clazz uc on u.user_ID = uc.user_ID
+        left join clazz c on uc.Clazz_ID = c.Clazz_ID
+        where u.user_ID = #{tid}
+    </select>
+
+    <insert id="insertTeacher">
+        insert into user(user_Name, user_Password, user_sex, user_type, user_code)
+        values (#{userName}, #{userPass}, #{userSex}, #{userType}, #{userCode})
+    </insert>
+
+    <update id="updateTeacherById">
+        update user
+        set user_Name = #{userName}, user_password = #{userPass}, user_code = #{userCode}, user_sex = #{userSex}
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteTeacherById">
+        delete from user where user_ID = #{userId}
+    </delete>
+</mapper>
