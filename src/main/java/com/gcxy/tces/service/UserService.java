@@ -14,4 +14,6 @@ public interface UserService {
     List<User> AllUsers();
 
     LoginToken loginByToken(String userCode, String userPass);
+
+    User getUserByCode(String userCode);
 }

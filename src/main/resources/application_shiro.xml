@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--配置shiro核心组件securityManager-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--注入缓存管理器-->
+        <property name="cacheManager" ref="cacheManager"/>
+        <!--注入自定义realm-->
+        <property name="realm" ref="userRealm"/>
+    </bean>
+
+    <!--配置缓存管理器-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <!-- Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one
+             will be creaed with a default config:
+             <property name="cacheManager" ref="ehCacheManager"/> -->
+        <!-- If you don't have a pre-built net.sf.ehcache.CacheManager instance to inject, but you want
+             a specific Ehcache configuration to be used, specify that here.  If you don't, a default
+             will be used.:
+        <property name="cacheManagerConfigFile" value="classpath:some/path/to/ehcache.xml"/> -->
+    </bean>
+
+    <!--自定义realm-->
+    <bean id="userRealm" class="com.gcxy.tces.common.shiro.UserRealm">
+        <!--配置密码加密算法-->
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!-- 加密算法的名称 -->
+                <property name="hashAlgorithmName" value="MD5"/>
+                <!-- 配置加密的次数 -->
+                <!--后端再加密一次-->
+                <property name="hashIterations" value="1"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--spring管理shiro对象生命周期-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!--开启shiro注解-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+    <!--shiro过滤器-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--登录的地址，不需要认证即可访问，未认证时自动跳转该路径-->
+        <property name="loginUrl" value="/view/login.html"/>
+        <!--认证成功跳转路径-->
+        <!--<property name="successUrl" value="/index.jsp"/>-->
+        <!--权限不足跳转路径-->
+        <property name="unauthorizedUrl" value="/view/unauthorized.html"/>
+        <!--引入自定义filters-->
+        <!-- <property name="filters">
+            <util:map>
+                <entry key="aName" value-ref="someFilterPojo"/>
+            </util:map>
+        </property> -->
+        <!--定义shiro过滤器链-->
+        <property name="filterChainDefinitions">
+            <!-- url = 过滤器 -->
+            <!--anon无需认证即可访问-->
+            <!--authc需认证可访问-->
+            <value>
+                /js/** = anon
+                /images/** = anon
+                /css/** = anon
+                /plugins/** = anon
+                /view/login.html = anon
+                /user/login = anon
+                /user/signin = anon
+                # allow WebStart to pull the jars for the swing app:
+                /*.html = anon
+                # everything else requires authentication:
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+</beans>

@@ -34,7 +34,7 @@
             var md5Pass = hex_md5($("input[name=userPass]").val());
             $.ajax({
                type:"post",
-               url:"../user/login",
+               url:"../user/signin",
                data:{userCode:$("input[name=userCode]").val(), userPass:md5Pass},
                success:function (data) {
                    console.log("status", data.status);

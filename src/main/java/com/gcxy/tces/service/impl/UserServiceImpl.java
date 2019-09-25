@@ -65,6 +65,11 @@ public class UserServiceImpl implements UserService {
         return token;
     }
 
+    @Override
+    public User getUserByCode(String userCode) {
+        return userMapper.selectUserByCode(userCode);
+    }
+
 
 }
 

@@ -1,6 +1,7 @@
 package com.gcxy.tces.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
+import com.gcxy.tces.entity.Clazz;
 import com.gcxy.tces.entity.Course;
 import com.gcxy.tces.entity.User;
 import com.gcxy.tces.mapper.StudentMapper;
@@ -54,7 +55,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveStudent(User user) {
+        //插入学生
         int rs = studentMapper.insertStudent(user);
+        //根据班级名查询班级id
+        String clazzId = studentMapper.selectClazzIdByName(user.getClazz()).getClazzId();
+        //插入学生与班级关联信息
+        studentMapper.insertUserClazz(user.getUserId(), clazzId);
         LOGGER.debug("######StudentService.saveStudent######");
         LOGGER.debug("save operation result: " + rs);
         return true;
@@ -104,13 +110,13 @@ public class StudentServiceImpl implements StudentService {
         for(User data : dataList){
             //处理用户信息
             processUserInfo(data);
-            //插入数据库
+            //插入数据库, 会设置自增主键到data对应的属性中
             studentMapper.insertStudent(data);
 
             //插入学生班级关联关系
-            String userId = studentMapper.selectUserIdByCode(data.getUserCode()).getUserId();
+            //String userId = studentMapper.selectUserIdByCode(data.getUserCode()).getUserId();
             String clazzId = studentMapper.selectClazzIdByName(data.getClazz()).getClazzId();
-            studentMapper.insertUserClazz(userId, clazzId);
+            studentMapper.insertUserClazz(data.getUserId(), clazzId);
 
         }
     }

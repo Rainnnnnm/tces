@@ -44,7 +44,7 @@
     </select>
 
     <!--插入学生纪录-->
-    <insert id="insertStudent">
+    <insert id="insertStudent" useGeneratedKeys="true" keyProperty="userId">
         insert into `user`(user_Name, user_Password, user_type, user_sex, user_code)
         values (#{userName},#{userPass},#{userType},#{userSex},#{userCode})
     </insert>

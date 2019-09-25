@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     /**
-     * 模糊查询课程
+     * 模糊查询课程，分页查询
      * @param key 关键词
      */
     @RequestMapping("/search")
@@ -59,6 +59,11 @@ public class CourseController {
     }
 
 
+    /**
+     * 保存课程信息
+     * @param course 课程实体
+     * @return json
+     */
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> saveCourse(Course course){
@@ -74,6 +79,11 @@ public class CourseController {
         return resultMap;
     }
 
+    /**
+     * 更新课程信息
+     * @param course 课程实体
+     * @return json
+     */
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> updateCourse(Course course){
@@ -89,6 +99,11 @@ public class CourseController {
         return resultMap;
     }
 
+    /**
+     * 删除课程信息
+     * @param cid 课程id
+     * @return json
+     */
     @RequestMapping("/delete")
     @ResponseBody
     public Map<String, Object> deleteCourse(String cid){

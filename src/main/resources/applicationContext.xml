@@ -5,6 +5,9 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+    <!--引入shiro配置文件-->
+    <import resource="classpath:application_shiro.xml"/>
+
     <!--开启组件扫描，扫描mapper、service层注解-->
     <context:component-scan base-package="com.gcxy.tces.mapper"/>
     <context:component-scan base-package="com.gcxy.tces.service"/>
@@ -56,4 +59,6 @@
 
     <!--开启事务注解驱动-->
     <tx:annotation-driven/>
+
+
 </beans>
