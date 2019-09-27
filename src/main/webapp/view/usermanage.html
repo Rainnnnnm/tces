@@ -43,7 +43,7 @@
                     <!-- Navbar Header-->
                     <div class="navbar-header">
                         <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
-                        <div class="brand-text d-none d-lg-inline-block"><span>Bootstrap </span><strong>Dashboard</strong></div>
+                        <div class="brand-text d-none d-lg-inline-block"><span>在线评教系统 </span><strong>后台</strong></div>
                         <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
                         <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
                     </div>
@@ -98,13 +98,6 @@
                                 <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Read all messages   </strong></a></li>
                             </ul>
                         </li>
-                        <!-- Languages dropdown    -->
-                        <li class="nav-item dropdown"><a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
-                            <ul aria-labelledby="languages" class="dropdown-menu">
-                                <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2">German</a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2">French                                         </a></li>
-                            </ul>
-                        </li>
                         <!-- Logout    -->
                         <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
                     </ul>
@@ -119,31 +112,32 @@
             <div class="sidebar-header d-flex align-items-center">
                 <!--<div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>-->
                 <div class="title">
-                    <h1 class="h4">Mark Stephen</h1>
-                    <p>Web Designer</p>
+                    <h1 class="h4">admin</h1>
+                    <p>online</p>
                 </div>
             </div>
             <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
             <ul class="list-unstyled">
                 <li><a href="index.html"> <i class="icon-home"></i>主页 </a></li>
                 <li class="active"><a href="usermanage.html"> <i class="icon-grid"></i>用户管理 </a></li>
-                <li><a href="charts.html"> <i class="fa fa-bar-chart"></i>Charts </a></li>
-                <li><a href="forms.html"> <i class="icon-padnote"></i>Forms </a></li>
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Example dropdown </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
-                </li>
-                <li><a href="login.html"> <i class="icon-interface-windows"></i>Login page </a></li>
-            </ul><span class="heading">Extras</span>
-            <ul class="list-unstyled">
-                <li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>
-                <li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>
-                <li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>
-                <li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>
+                <!--<li><a href="charts.html"> <i class="fa fa-bar-chart"></i>Charts </a></li>-->
+                <!--<li><a href="forms.html"> <i class="icon-padnote"></i>Forms </a></li>-->
+                <!--<li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Example dropdown </a>-->
+                    <!--<ul id="exampledropdownDropdown" class="collapse list-unstyled ">-->
+                        <!--<li><a href="#">Page</a></li>-->
+                        <!--<li><a href="#">Page</a></li>-->
+                        <!--<li><a href="#">Page</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <!--<li><a href="login3.html"> <i class="icon-interface-windows"></i>Login page </a></li>-->
             </ul>
+            <!--<span class="heading">Extras</span>-->
+            <!--<ul class="list-unstyled">-->
+                <!--<li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>-->
+                <!--<li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>-->
+                <!--<li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>-->
+                <!--<li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>-->
+            <!--</ul>-->
         </nav>
 
         <!--主体内容-->
@@ -183,7 +177,7 @@
                                                 <div class="form-group row align-items-center">
                                                     <label for="selectBox" class="col-sm-4 col-form-label col-form-label-sm">用户类型：</label>
                                                     <div class="col-sm-8">
-                                                        <select id="selectBox" class="custom-select custom-select-sm" style="color: #adadad;">
+                                                        <select id="selectBox" class="custom-select custom-select-sm selectBox" style="color: #adadad;">
                                                             <option value='' disabled selected style='display:none;'>请选择</option>
                                                             <option value="2" style="color: black">管理员</option>
                                                             <option value="0" style="color: black">学生</option>
@@ -280,18 +274,18 @@
             </section>
 
             <!-- Page Footer-->
-            <footer class="main-footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p>Your company &copy; 2017-2019</p>
-                        </div>
-                        <div class="col-sm-6 text-right">
-                            <p>Design by Bootstrapious.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <!--<footer class="main-footer">-->
+                <!--<div class="container-fluid">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-sm-6">-->
+                            <!--<p>Your company &copy; 2017-2019</p>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-6 text-right">-->
+                            <!--<p>Design by Bootstrapious.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</footer>-->
         </div>
     </div>
 </div>
@@ -307,7 +301,33 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="addUserCode">账号：</label>
+                        <input type="text" class="form-control" name="userCode" id="addUserCode" placeholder="请输入账号">
+                    </div>
+                    <div class="form-group">
+                        <label for="addUserName">姓名：</label>
+                        <input type="text" class="form-control" name="userName" id="addUserName" placeholder="请输入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="addUserType">用户类型：</label>
+                        <select id="addUserType" class="custom-select" name="userType" style="color: #adadad;">
+                            <option value='' disabled selected style='display:none;'>请选择</option>
+                            <option value="2" style="color: black">管理员</option>
+                            <option value="0" style="color: black">学生</option>
+                            <option value="1" style="color: black">教师</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addUserSex">用户性别：</label>
+                        <select id="addUserSex" name="userSex" class="custom-select" style="color: #adadad;">
+                            <option value='' disabled selected style='display:none;'>请选择</option>
+                            <option value="1" style="color: black">男</option>
+                            <option value="0" style="color: black">女</option>
+                        </select>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -329,7 +349,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form id="fileUploadForm" enctype="multipart/form-data">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="file" id="excelFile" lang="zh-CN">
+                        <label class="custom-file-label" for="excelFile">选择excel文件</label>
+                    </div>
+                </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -342,12 +368,28 @@
 
 <!-- JavaScript files-->
 <script src="../plugins/jquery/jquery-3.4.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- Main File-->
 <script src="../js/front.js"></script>
 
 <script type="text/javascript">
     $(function(){
+
+        /**
+         * 更新表格的序号
+         */
+        function reIndex() {
+            var indexObj = $("table>tbody tr");
+            for (var i = 0; i < indexObj.length; i++){
+                indexObj[i].firstElementChild.innerText = i + 1;
+            }
+            // console.log(indexObj);
+        }
+
+        reIndex();
+
+        bsCustomFileInput.init();
         /**
          * select框值改变时，调整其字体颜色
          */
@@ -375,7 +417,7 @@
                 dataType:"json",
                 data:{
                     key:$("#key").val(),
-                    userType:$("#selectBox:selected").val(),
+                    userType:$("#selectBox option:selected").val(),
                     pageSize:3,
                     pageNum:1
                 },
@@ -445,14 +487,15 @@
                 "<td>"+user.userSex+"</td>\n" +
                 "<td>"+userTypeStr+"</td>\n" +
                 "<td>\n" +
-                " <a href='#' class='describe'>详情</a>\n" +
+                " <a href='"+user.userId+"' class='describe'>详情</a>\n" +
                 " <span style='color: #adadad'> | </span>\n" +
-                " <a href='#' class='delete'>删除</a>\n" +
+                " <a href='"+user.userId+"' class='delete'>删除</a>\n" +
                 "</td>\n" +
                 "</tr>");
 
             //把tr添加到tbody中
             $("tbody").append(trObj);
+            reIndex();
         }
 
         /**
@@ -492,6 +535,17 @@
             event.preventDefault();
             //do something
             console.log("点击删除");
+            var userId = $(this).attr("href");
+            console.log("userId",userId);
+            $.ajax({
+                url:"../student/delete",
+                type:"post",
+                dataType:"json",
+                data:{uid:userId},
+                success:function (data) {
+
+                }
+            });
 
             //删除这一行
             $(this).parent().parent().animate({opacity:0},1000).queue(function () {
@@ -506,7 +560,7 @@
             var currentPage = $(".pagination .active").text();
             var pageSize = 3;
             var key = $("#key").val();
-            var userType = $("#selectBox:selected").val();
+            var userType = $("#selectBox option:selected").val();
             var url;
             if(key === "" || userType === ""){
                 url = "../student/all";
@@ -554,7 +608,7 @@
             var currentPage = $(".pagination .active").text();
             var pageSize = 3;
             var key = $("#key").val();
-            var userType = $("#selectBox:selected").val();
+            var userType = $("#selectBox option:selected").val();
             var url;
             if(key === "" || userType === ""){
                 url = "../student/all";
@@ -596,10 +650,11 @@
         });
 
         $(".pagination").on("click", ".page-num", function () {
-            var currentPage = $(".pagination .active").text();
+            var currentPage = $(this).text();
+                console.log(currentPage);
             var pageSize = 3;
             var key = $("#key").val();
-            var userType = $("#selectBox:selected").val();
+            var userType = $("#selectBox option:selected").val();
             var url;
             var thisObj = this;
             if(key === "" || userType === ""){
@@ -625,13 +680,19 @@
                     //更新页码
                     $(".page-num").removeClass("active");
                     $(thisObj).addClass("active");
-                    //没有下一页则关闭
-                    if(data.hasNextPage === false){
-                        $(".pagination li:last").addClass("disabled");
-                    }
+
                     //有上一页则激活
                     if(data.hasPreviousPage){
                         $(".pagination li:first").removeClass("disabled");
+                    }else {
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    //有下一页则激活
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }else{
+                        $(".pagination li:last").addClass("disabled");
                     }
                 }
             })
@@ -645,7 +706,7 @@
             var hasNextPage = pageInfo.hasNextPage;
             var hasPreviousPage = pageInfo.hasPreviousPage;
             console.log("hasNextPage", hasNextPage);
-
+            $(".pagination .page-num").remove();
             for(var i = 1; i <= pages; i++){
                 $(".pagination li:last").before("<li class='page-item page-num'><span class='page-link'>"+i+"</span></li>");
             }
@@ -661,6 +722,61 @@
             //激活第一页
             $(".pagination li:first").next().addClass("active");
         }
+
+        /**
+         * 文件上传
+         */
+        $("#batchAddModal button:last").click(function () {
+            $.ajax({
+                url:"../student/upload",
+                type:"post",
+                cache:false,
+                //传入原生表单对象构建一个FormData对象
+                data:new FormData($("#fileUploadForm")[0]),
+                processData:false,
+                contentType:false,
+                //成功回调方法
+                success:function (data) {
+                    if(data.status === 200){
+                        alert(data.data);
+                    }else if(data.status === 500){
+                        alert(data.data);
+                    }
+                },
+                //ajax请求出现错误回调方法
+                error:function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        /**
+         * 添加单个用户
+         */
+        $("#addModal button:last").click(function () {
+            var form = new FormData($("#addUserForm")[0]);
+            $.ajax({
+                url:"../student/save",
+                type:"post",
+                dataType:"json",
+                //传入原生表单对象构建一个FormData对象
+                data:form,
+                processData:false,
+                contentType:false,
+                //成功回调方法
+                success:function (data) {
+                    if(data.status === 200){
+                        alert(data.data);
+                    }else if(data.status === 500){
+                        alert(data.data);
+                    }
+                },
+                //ajax请求出现错误回调方法
+                error:function (err) {
+                    console.log(err);
+                }
+            });
+        });
 
     });
 

@@ -57,6 +57,7 @@
         <!--<property name="successUrl" value="/index.jsp"/>-->
         <!--权限不足跳转路径-->
         <property name="unauthorizedUrl" value="/view/unauthorized.html"/>
+        <property name="successUrl" value="/view/index.html"/>
         <!--引入自定义filters-->
         <!-- <property name="filters">
             <util:map>

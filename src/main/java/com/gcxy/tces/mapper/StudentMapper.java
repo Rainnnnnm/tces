@@ -24,7 +24,7 @@ public interface StudentMapper {
      * @param key 关键字
      * @return result
      */
-    List<User> selectStudentsByKey(String key);
+    List<User> selectStudentsByKey(@Param("key") String key, @Param("userType")String userType);
 
     /**
      * 根据id查询学生信息

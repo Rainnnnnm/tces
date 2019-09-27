@@ -42,9 +42,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<User> getStudentsByKey(String key, int pageNum, int pageSize) {
+    public List<User> getStudentsByKey(String key, String userType, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return studentMapper.selectStudentsByKey(key);
+        return studentMapper.selectStudentsByKey(key, userType);
     }
 
     @Override
@@ -55,15 +55,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveStudent(User user) {
+        //设置初始密码,使用md5加密
+        String md5 = SecureUtil.md5("123456");
+        //使用两次md5加密
+        user.setUserPass(SecureUtil.md5(md5));
+        LOGGER.debug("double encode by md5: {}", md5);
         //插入学生
         int rs = studentMapper.insertStudent(user);
         //根据班级名查询班级id
-        String clazzId = studentMapper.selectClazzIdByName(user.getClazz()).getClazzId();
+        //String clazzId = studentMapper.selectClazzIdByName(user.getClazz()).getClazzId();
         //插入学生与班级关联信息
-        studentMapper.insertUserClazz(user.getUserId(), clazzId);
+        //studentMapper.insertUserClazz(user.getUserId(), clazzId);
         LOGGER.debug("######StudentService.saveStudent######");
         LOGGER.debug("save operation result: " + rs);
-        return true;
+        return rs > 0;
     }
 
     @Override
@@ -75,29 +80,40 @@ public class StudentServiceImpl implements StudentService {
         return true;
     }
 
+//    @Override
+//    public boolean removeStudentById(String stuId) {
+//        //事务定义
+//        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+//        //开启事务，获取事务状态
+//        TransactionStatus status = transactionManager.getTransaction(def);
+//        //标志
+//        boolean flag = true;
+//        try{
+//            //执行db操作
+//            int rs = studentMapper.deleteStudentById(stuId);
+//            LOGGER.debug("######StudentService.saveStudent######");
+//            LOGGER.debug("remove operation result: " + rs);
+//            transactionManager.commit(status);
+//        } catch (Exception e) {
+//            //回滚事务
+//            transactionManager.rollback(status);
+//            //抛出当前异常
+//            //throw e;
+//            //打印exception信息
+//            e.printStackTrace();
+//            flag = false;
+//        }
+//        return flag;
+//    }
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean removeStudentById(String stuId) {
-        //事务定义
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        //开启事务，获取事务状态
-        TransactionStatus status = transactionManager.getTransaction(def);
-        //标志
-        boolean flag = true;
-        try{
-            //执行db操作
-            int rs = studentMapper.deleteStudentById(stuId);
-            LOGGER.debug("######StudentService.saveStudent######");
-            LOGGER.debug("remove operation result: " + rs);
-        } catch (Exception e) {
-            //回滚事务
-            transactionManager.rollback(status);
-            //抛出当前异常
-            //throw e;
-            //打印exception信息
-            e.printStackTrace();
-            flag = false;
-        }
-        return flag;
+        //执行db操作
+        int rs = studentMapper.deleteStudentById(stuId);
+        LOGGER.debug("######StudentService.saveStudent######");
+        LOGGER.debug("remove operation result: " + rs);
+        return rs > 0;
     }
 
     /**

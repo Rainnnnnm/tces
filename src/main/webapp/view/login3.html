@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+<label for="userCode">账号</label>
+<input id="userCode" name="userCode" required type="text">
+<label for="userPass">密码</label>
+<input id="userPass" name="userPass" type="password" required>
+<button id="login">Login</button>
+</body>
+<!--导入jquery-->
+<script type="text/javascript" src="../plugins/jquery/jquery-3.4.0.js"></script>
+<!--导入MD5插件-->
+<script type="text/javascript" src="../plugins/md5/md5.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        /**
+         * 绑定点击事件
+         * 发送异步请求
+         */
+        $("#login").bind("click", function () {
+
+            //数据格式验证
+            if(!validateData()){
+                //do tips
+                return;
+            }
+
+            //md5加密处理
+            var md5Pass = hex_md5($("input[name=userPass]").val());
+            $.ajax({
+               type:"post",
+               url:"../user/signin",
+               data:{userCode:$("input[name=userCode]").val(), userPass:md5Pass},
+               success:function (data) {
+                   console.log("status", data.status);
+                   console.log("data", data.data);
+                   console.log("auth", data.auth);
+               }
+            });
+
+        });
+    });
+
+    /**
+     * 简单的验证数据
+     * @returns {boolean}
+     */
+    function validateData(){
+        var userCode = $("input[name=userCode]").val();
+        var userPass = $("input[name=userPass]").val();
+        //结果标志
+        var flag = true;
+
+        if(userCode === ""){
+            flag = false;
+        }
+
+        if(userPass === ""){
+            flag = false;
+        }
+
+        return flag;
+
+    }
+</script>
+</html>

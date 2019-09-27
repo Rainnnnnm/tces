@@ -113,7 +113,9 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         //判断当前用户是否已经认证（已登录）
         if(subject.isAuthenticated()){
-            return null;
+            resultMap.put("data", "账号已登录");
+            resultMap.put("status", 301);
+            return resultMap;
         }
         //生成用户令牌
         UsernamePasswordToken token = new UsernamePasswordToken(userCode, userPass);
@@ -121,6 +123,7 @@ public class UserController {
         try{
             subject.login(token);
             resultMap.put("data", "登录成功");
+            resultMap.put("status", 200);
         }catch (UnknownAccountException unknown){
             LOGGER.debug("#####未知账户异常####");
             LOGGER.debug("userCode: {}", token.getPrincipal());

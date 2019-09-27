@@ -25,7 +25,7 @@ public interface StudentService {
      * @param pageNum 页号
      * @param pageSize 页面大小
      */
-    List<User> getStudentsByKey(String key, int pageNum, int pageSize);
+    List<User> getStudentsByKey(String key, String userType, int pageNum, int pageSize);
 
     /**
      * 根据id查询学生信息

@@ -39,10 +39,10 @@ public class StudentController {
 
     @RequestMapping("/search")
     @ResponseBody
-    public PageInfo<User> getStudentByKey(String key, String pageNum, String pageSize){
+    public PageInfo<User> getStudentByKey(String key, String userType, String pageNum, String pageSize){
         int num = Integer.parseInt(pageNum);
         int size = Integer.parseInt(pageSize);
-        List<User> users = studentService.getStudentsByKey(key, num, size);
+        List<User> users = studentService.getStudentsByKey(key, userType, num, size);
 
         //把list包装成一个PageInfo返回给前端数据
         return new PageInfo<>(users);
