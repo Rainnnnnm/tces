@@ -9,6 +9,7 @@ public class Course {
     private String courseId;
     private String courseName;
     private List<User> userList;
+    private List<Clazz> clazzList;
 
     public List<User> getUserList() {
         return userList;
@@ -32,5 +33,13 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public void setClazzList(List<Clazz> clazzList) {
+        this.clazzList = clazzList;
+    }
+
+    public List<Clazz> getClazzList() {
+        return clazzList;
     }
 }

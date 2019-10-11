@@ -10,14 +10,19 @@
         <result property="courseName" column="course_name"/>
     </resultMap>
 
-    <!--课程嵌套教师映射-->
-    <resultMap id="courseNestedUserMap" type="com.gcxy.tces.entity.Course">
+    <!--课程嵌套教师和班级映射-->
+    <resultMap id="courseNestedUserAndClazzMap" type="com.gcxy.tces.entity.Course">
         <id property="courseId" column="course_id"/>
         <result property="courseName" column="course_name"/>
         <collection property="userList" ofType="com.gcxy.tces.entity.User" javaType="list">
             <id property="userId" column="user_id"/>
             <result property="userName" column="user_name"/>
             <result property="userSex" column="user_sex"/>
+        </collection>
+
+        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz" javaType="list">
+            <id property="clazzId" column="clazz_id"/>
+            <result property="clazzName" column="clazz_name"/>
         </collection>
     </resultMap>
 
@@ -27,11 +32,13 @@
     </select>
 
     <!--根据id查询课程-->
-    <select id="selectCourseById" resultMap="courseNestedUserMap">
+    <select id="selectCourseById" resultMap="courseNestedUserAndClazzMap">
         select c.Course_ID, c.Course_name, u.user_ID, u.user_Name
+                , cz.Clazz_ID, cz.Clazz_name
         from course c
-        left join user_course uc on c.Course_ID = uc.Course_ID
-        left join `user` u on uc.user_ID = u.user_ID
+        left join user_course_clazz ucc on c.Course_ID = ucc.Course_ID
+        left join `user` u on ucc.user_ID = u.user_ID
+        left join clazz cz on cz.Clazz_ID = ucc.clazz_id
         where c.Course_ID = #{courseId}
     </select>
 
@@ -54,4 +61,10 @@
     <delete id="deleteCourseById">
         delete from course where Course_ID = #{courseId}
     </delete>
+
+    <!--插入课程用户关联-->
+    <insert id="insertCourseUser">
+        insert into user_course(user_ID, Course_ID) values (#{userId}, #{courseId})
+    </insert>
+
 </mapper>

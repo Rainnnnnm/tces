@@ -3,83 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcxy.tces.mapper.StudentMapper">
-    <!--学生映射-->
-    <resultMap id="studentMap" type="com.gcxy.tces.entity.User">
-        <id property="userId" column="user_id"/>
-        <result property="userName" column="user_name"/>
-        <result property="userType" column="user_type"/>
-        <result property="userCode" column="user_code"/>
-        <result property="userSex" column="user_sex"/>
-    </resultMap>
 
-    <!--学生嵌套班级映射-->
-    <resultMap id="studentNestedClazzMap" type="com.gcxy.tces.entity.User">
-        <id property="userId" column="user_id"/>
-        <result property="userName" column="user_name"/>
-        <result property="userType" column="user_type"/>
-        <result property="userCode" column="user_code"/>
-        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz" javaType="list">
-            <id property="clazzId" column="clazz_id"/>
-            <result property="clazzName" column="clazz_name"/>
+    <!--课程嵌套教师映射-->
+    <resultMap id="courseNestedTeachMap" type="com.gcxy.tces.entity.Course">
+        <id property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <collection property="userList" ofType="com.gcxy.tces.entity.User" javaType="list">
+            <id property="userId" column="user_id"/>
+            <result property="userSex" column="user_sex"/>
+            <result property="userName" column="user_name"/>
         </collection>
     </resultMap>
 
-    <!--查询所有学生-->
-    <select id="selectAllStudents" resultMap="studentMap">
-        select user_ID, user_Name, user_type, user_code, user_sex from `user`
-    </select>
+    <!--&lt;!&ndash;根据班级id查询课程信息嵌套教师信息&ndash;&gt;-->
+    <!--<select id="selectCoursesByCid" resultMap="courseNestedTeachMap">-->
+        <!--select *-->
+        <!--from user_course uc, course c, user u-->
+        <!--where uc.user_ID = u.user_ID and c.Course_ID = uc.Course_ID-->
+              <!--and c.Course_ID = #{cid}-->
+    <!--</select>-->
 
-    <!--根据关键字模糊查询学生-->
-    <select id="selectStudentsByKey" resultMap="studentMap">
-        select user_ID, user_Name, user_type, user_code, user_sex from `user`
-        where user_type = #{userType} and user_name like CONCAT('%',#{key},'%')
-    </select>
-
-    <!--根据id查询学生信息-->
-    <select id="selectStudentById" resultMap="studentNestedClazzMap">
-        select u.user_ID, u.user_Name, u.user_type, u.user_code, c.Clazz_ID, c.Clazz_name
-        from `user` u
-        left join user_clazz uc on u.user_ID = uc.user_ID
-        left join clazz c on uc.Clazz_ID = c.Clazz_ID
-        where u.user_ID = #{stuId}
-    </select>
-
-    <!--插入学生纪录-->
-    <insert id="insertStudent" useGeneratedKeys="true" keyProperty="userId">
-        insert into `user`(user_Name, user_Password, user_type, user_sex, user_code)
-        values (#{userName},#{userPass},#{userType},#{userSex},#{userCode})
-    </insert>
-
-    <!--修改学生信息-->
-    <update id="updateStudentById">
-        update `user`
-        set user_Name = #{userName}, user_password = #{userPass}, user_code = #{userCode}, user_sex = #{userSex}
-        where user_id = #{userId}
-    </update>
-
-    <!--根据id删除学生-->
-    <delete id="deleteStudentById">
-        delete from user where user_ID = #{stuId}
-    </delete>
-
-    <!--插入用户班级关联关系-->
-    <insert id="insertUserClazz">
-        insert into user_clazz(user_ID, Clazz_ID) VALUES (#{userId}, #{clazzId})
-    </insert>
-
-    <!--根据学号查询用户id-->
-    <select id="selectUserIdByCode" resultMap="studentMap">
-        select user_ID from user where user_code = #{userCode} and user_type = 0
-    </select>
-
-    <!--根据班级名查询班级id-->
-    <select id="selectClazzIdByName" resultMap="clazzMap">
-        select Clazz_ID from clazz where Clazz_name = #{clazzName}
-    </select>
-
-    <!--班级映射-->
-    <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
-        <id property="clazzId" column="clazz_id"/>
-        <result property="clazzName" column="clazz_name"/>
-    </resultMap>
+    <!--&lt;!&ndash;根据学生id查询所在班级id&ndash;&gt;-->
+    <!--<select id="selectCidBySid" resultType="com.gcxy.tces.entity.Course">-->
+        <!--select c.Course_ID as courseId-->
+        <!--from user_course uc, course c-->
+        <!--where uc.Course_ID = c.Course_ID and uc.user_ID = #{sid}-->
+    <!--</select>-->
 </mapper>

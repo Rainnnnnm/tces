@@ -44,6 +44,7 @@
         where u.user_ID = #{tid}
     </select>
 
+
     <insert id="insertTeacher">
         insert into user(user_Name, user_Password, user_sex, user_type, user_code)
         values (#{userName}, #{userPass}, #{userSex}, #{userType}, #{userCode})

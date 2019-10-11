@@ -2,17 +2,19 @@ package com.gcxy.tces.controller;
 
 import com.gcxy.tces.entity.Course;
 import com.gcxy.tces.service.CourseService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author Rain
@@ -21,6 +23,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
+
     @Autowired
     private CourseService courseService;
 
@@ -41,7 +46,14 @@ public class CourseController {
     @RequestMapping("/describe")
     @ResponseBody
     public Course getCourseById(String cid){
-        return courseService.getCourseById(cid);
+        Course course = courseService.getCourseById(cid);
+        if (course.getUserList() instanceof Page){
+            LOGGER.debug("##### is Page instance");
+        }else {
+            LOGGER.debug("##### not Page instance");
+        }
+
+        return course;
     }
 
     /**
@@ -61,10 +73,11 @@ public class CourseController {
 
     /**
      * 保存课程信息
+     * 限制访问为POST请求
      * @param course 课程实体
      * @return json
      */
-    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveCourse(Course course){
         Map<String, Object> resultMap = new HashMap<>();
@@ -81,10 +94,11 @@ public class CourseController {
 
     /**
      * 更新课程信息
+     * 限制访问为POST请求
      * @param course 课程实体
      * @return json
      */
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> updateCourse(Course course){
         Map<String, Object> resultMap = new HashMap<>();
@@ -119,4 +133,49 @@ public class CourseController {
         return resultMap;
     }
 
+    /**
+     * 关联课程与单个教师
+     * 限制为get请求访问
+     * @param cid 课程id
+     * @param tid 教师id
+     * @return json
+     */
+    @GetMapping("/associate")
+    @ResponseBody
+    public Map<String, Object> saveCourseTeacher(String cid, String tid){
+        Map<String, Object> resultMap = new HashMap<>();
+        boolean b = courseService.saveCourseTeacher(cid, tid);
+        if (b) {
+            resultMap.put("status", 200);
+            resultMap.put("data", "关联成功");
+        } else {
+            resultMap.put("status", 500);
+            resultMap.put("data", "关联失败");
+        }
+        return resultMap;
+    }
+
+    /**
+     * 关联课程与多个教师
+     * 限制为post请求访问
+     * @param cid 课程id
+     * @param tids 多个教师id
+     * @return json
+     */
+    @PostMapping("/associates")
+    @ResponseBody
+    public Map<String, Object> saveBatchCourseTeacher(String cid, String tids){
+        Map<String, Object> resultMap = new HashMap<>();
+        //tids参数转化成一个tid数组
+        String[] tidArr = tids.split(",");
+        boolean b = courseService.saveBatchCourseTeacher(cid, tidArr);
+        if (b) {
+            resultMap.put("status", 200);
+            resultMap.put("data", "批量关联成功");
+        } else {
+            resultMap.put("status", 500);
+            resultMap.put("data", "批量关联失败");
+        }
+        return resultMap;
+    }
 }

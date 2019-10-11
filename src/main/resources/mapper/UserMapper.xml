@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gcxy.tces.mapper.UserMapper">
 
+    <!--简单用户映射-->
     <resultMap id="userMap" type="com.gcxy.tces.entity.User">
         <id column="user_id" property="userId"/>
         <result column="user_name" property="userName"/>
@@ -13,27 +14,103 @@
         <result column="user_type" property="userType"/>
     </resultMap>
 
-    <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
-        <id column="clazz_id" property="clazzId"/>
-        <result column="clazz_name" property="clazzName"/>
-        <association property="department" javaType="com.gcxy.tces.entity.Department">
-            <id column="depart_id" property="deptId"/>
-            <result column="depart_name" property="deptName"/>
-        </association>
-
+    <!--用户嵌套班级与课程映射-->
+    <resultMap id="userNestedClazzAndCourseMap" type="com.gcxy.tces.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userType" column="user_type"/>
+        <result property="userCode" column="user_code"/>
+        <result property="userSex" column="user_sex"/>
+        <collection property="clazzList" ofType="com.gcxy.tces.entity.Clazz" javaType="list">
+            <id property="clazzId" column="clazz_id"/>
+            <result property="clazzName" column="clazz_name"/>
+        </collection>
+        <collection property="courseList" ofType="com.gcxy.tces.entity.Course" javaType="list">
+            <id property="courseId" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+        </collection>
     </resultMap>
 
-    <select id="selectAllUsers" resultMap="userMap">
-         select * from user u join user_clazz uc on u.user_ID = uc.user_ID
-         join clazz c2 on uc.Clazz_ID = c2.Clazz_ID
-    </select>
-
-    <insert id="insertUser">
-        insert into user(user_name, user_password, user_type)
-        values (#{userName},#{userPass},#{userType})
-    </insert>
-
+    <!--根据账号查询用户信息，login-->
     <select id="selectUserByCode" resultMap="userMap">
         select * from user where user_code = #{userCode}
     </select>
+
+    <!--查询所有用户-->
+    <select id="selectAllUsers" resultMap="userMap">
+        select user_ID, user_Name, user_type, user_code, user_sex, user_Password from `user`
+    </select>
+
+    <!--根据关键字模糊查询用户：动态sql-->
+    <select id="selectUsersByKey" resultMap="userMap">
+        select user_ID, user_Name, user_type, user_code, user_sex from `user`
+        where user_type = #{userType} and user_name like CONCAT('%',#{key},'%')
+    </select>
+
+    <!--根据id查询用户信息-->
+    <select id="selectUserById" resultMap="userNestedClazzAndCourseMap">
+        select u.user_ID, u.user_Name, u.user_type, u.user_code, u.user_sex, c.Clazz_ID, c.Clazz_name
+                ,cr.Course_ID, cr.Course_name
+        from `user` u
+        left join user_course_clazz ucc on u.user_ID = ucc.user_ID
+        left join clazz c on ucc.Clazz_ID = c.Clazz_ID
+        left join course cr on cr.Course_ID = ucc.course_id
+        where u.user_ID = #{id}
+    </select>
+
+    <!--插入用户纪录，返回一个主键值-->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into `user`(user_Name, user_Password, user_type, user_sex, user_code)
+        values (#{userName},#{userPass},#{userType},#{userSex},#{userCode})
+    </insert>
+
+    <!--修改用户信息-->
+    <update id="updateUserById">
+        update `user`
+        set user_Name = #{userName}, user_code = #{userCode}, user_sex = #{userSex}, user_type = #{userType}
+        where user_id = #{userId}
+    </update>
+
+    <!--根据id删除用户-->
+    <delete id="deleteUserById">
+        delete from user where user_ID = #{id}
+    </delete>
+
+    <!--插入用户班级关联关系-->
+    <insert id="insertUserClazz">
+        insert into user_course_clazz(user_ID, Clazz_ID) VALUES (#{userId}, #{clazzId})
+    </insert>
+
+    <!--根据学号查询用户id-->
+    <select id="selectUserIdByCode" resultMap="userMap">
+        select user_ID from user where user_code = #{userCode} and user_type = 0
+    </select>
+
+    <!--根据班级名查询班级id-->
+    <select id="selectClazzIdByName" resultMap="clazzMap">
+        select Clazz_ID from clazz where Clazz_name = #{clazzName}
+    </select>
+
+    <!--根据userCode查询角色信息-->
+    <select id="selectRolesByUserCode" resultType="com.gcxy.tces.entity.Role">
+        select r.role_id roleId, r.role_name roleName
+        from role r, user_role ur , user u
+        where r.role_id = ur.role_id and u.user_ID = ur.user_id
+              and u.user_code = #{userCode}
+    </select>
+
+    <!--根据userCode查询权限信息-->
+    <select id="selectAuthsByUserCode" resultType="com.gcxy.tces.entity.Auth">
+        select a.auth_id authId, a.auth_name authName, a.auth_url authUrl
+        from user_role ur , user u, role_auth ra, auth a
+        where ur.user_id = u.user_ID and ur.role_id = ra.role_id and a.auth_id = ra.auth_id
+              and u.user_code = #{userCode}
+    </select>
+
+    <!--班级映射-->
+    <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
+        <id property="clazzId" column="clazz_id"/>
+        <result property="clazzName" column="clazz_name"/>
+    </resultMap>
+
 </mapper>
