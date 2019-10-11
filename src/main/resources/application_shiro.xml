@@ -81,7 +81,7 @@
                 /*.html = anon
                 /fonts/** = anon
                 # everything else requires authentication:
-                /** = authc
+                /** = anon
             </value>
         </property>
     </bean>

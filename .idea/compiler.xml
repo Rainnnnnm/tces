@@ -9,5 +9,8 @@
         <module name="tces" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="tces" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

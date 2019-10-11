@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--班级管理、班级课程管理、评价指标管理-->
+<mapper namespace="com.gcxy.tces.mapper.QuestionMapper">
+
+    <select id="selectQuestion" parameterType="String" resultMap="questionMap">
+        select * from question where Question like "%"#{question}"%"
+    </select>
+
+    <resultMap id="questionMap" type="com.gcxy.tces.entity.Question">
+        <id column="question_id" property="questionId"></id>
+        <result column="question" property="question"></result>
+        <association property="user" javaType="com.gcxy.tces.entity.Type">
+            <id column="type_id" property="typeId"></id>
+            <result column="type_name" property="typeName"></result>
+        </association>
+    </resultMap>
+
+
+    <insert id="addQuestion" parameterType="com.gcxy.tces.entity.Question">
+        insert into question(user_ID, type_id, Question) VALUES (#{userId},#{tyoeId},#{question})
+    </insert>
+
+    <update id="updateQuestion" parameterType="com.gcxy.tces.entity.Question">
+        update question set user_ID = #{userId} where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteQuestion" parameterType="String">
+        delete from question where question_id = #{questionId}
+    </delete>
+</mapper>
