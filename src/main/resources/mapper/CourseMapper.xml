@@ -67,4 +67,9 @@
         insert into user_course(user_ID, Course_ID) values (#{userId}, #{courseId})
     </insert>
 
+    <!--删除用户教师关联关系-->
+    <delete id="deleteTeacherCourse">
+        delete from user_course_clazz where user_id = #{tid} and course_id = #{cid}
+    </delete>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.gcxy.tces.mapper;
 
 import com.gcxy.tces.entity.Course;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -59,4 +60,6 @@ public interface CourseMapper {
      * @return int
      */
     int insertCourseUser(String courseId, String userId);
+
+    int deleteTeacherCourse(@Param("tid") String tid, @Param("cid") String cid);
 }

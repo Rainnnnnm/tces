@@ -14,10 +14,6 @@ import java.util.List;
  */
 @Repository
 public interface StudentMapper {
-    /**
-     * 根据学生id查询所有的课程信息
-     * @param sid 学生id
-     * @return 课程列表
-     */
-    List<Course> selectCoursesBySid(String sid);
+    List<Course> selectCourseTeacher(String cid);
+    Clazz selectClazzIdByUid(String uid);
 }

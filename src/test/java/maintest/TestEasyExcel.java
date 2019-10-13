@@ -21,10 +21,10 @@ public class TestEasyExcel {
      */
     @Test
     public void simpleRead() {
-        System.out.println(System.getProperty("user.dir"));
-        // 写法1：
-        String fileName = System.getProperty("user.dir") + File.separator + "demo.xlsx";
-        // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
-        EasyExcel.read(fileName, DemoData.class, new DemoDataListener()).sheet().doRead();
+//        System.out.println(System.getProperty("user.dir"));
+//        // 写法1：
+//        String fileName = System.getProperty("user.dir") + File.separator + "demo.xlsx";
+//        // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
+//        EasyExcel.read(fileName, DemoData.class, new DemoDataListener()).sheet().doRead();
     }
 }

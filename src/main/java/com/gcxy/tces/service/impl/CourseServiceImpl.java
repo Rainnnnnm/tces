@@ -93,5 +93,10 @@ public class CourseServiceImpl implements CourseService {
         return true;
     }
 
+    @Override
+    public boolean deleteTeacherCourse(String tid, String cid) {
+        return courseMapper.deleteTeacherCourse(tid, cid) > 0;
+    }
+
 
 }

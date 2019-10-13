@@ -24,39 +24,16 @@
         </collection>
     </resultMap>
 
-    <select id="selectAllTeachers" resultMap="teacherMap">
-        select user_ID, user_Name, user_sex, user_type, user_code
-          from user
-          where user_type = 1
+    <!--查询未选择该课的老师-->
+    <select id="selectTeacher" resultMap="teacherMap">
+        select u.user_name, u.user_id
+        from user u left join user_course_clazz ucc on u.user_ID = ucc.user_id
+        where u.user_type = 1 and (ucc.course_Id != #{course_Id} or ucc.course_Id is null)
     </select>
 
-    <select id="selectTeachersByKey" resultMap="teacherMap">
-        select user_ID, user_Name, user_sex, user_type, user_code
-          from user
-          where user_name like concat('%',#{key},'%') and user_type = 1
-    </select>
-
-    <select id="selectTeacherById" resultMap="teacherNestedClazzMap">
-        select u.user_ID, u.user_Name, u.user_type, u.user_code, c.Clazz_ID, c.Clazz_name
-        from user u
-        left join user_clazz uc on u.user_ID = uc.user_ID
-        left join clazz c on uc.Clazz_ID = c.Clazz_ID
-        where u.user_ID = #{tid}
-    </select>
-
-
-    <insert id="insertTeacher">
-        insert into user(user_Name, user_Password, user_sex, user_type, user_code)
-        values (#{userName}, #{userPass}, #{userSex}, #{userType}, #{userCode})
+    <!--插入教师与课程的关联关系-->
+    <insert id="insertTeacherCourse">
+        insert into user_course_clazz(user_id, course_id) values(#{teacherId}, #{courseId})
     </insert>
 
-    <update id="updateTeacherById">
-        update user
-        set user_Name = #{userName}, user_password = #{userPass}, user_code = #{userCode}, user_sex = #{userSex}
-        where user_id = #{userId}
-    </update>
-
-    <delete id="deleteTeacherById">
-        delete from user where user_ID = #{userId}
-    </delete>
 </mapper>

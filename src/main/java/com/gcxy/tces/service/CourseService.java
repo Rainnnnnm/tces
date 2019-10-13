@@ -66,6 +66,8 @@ public interface CourseService {
      * @return boolean
      */
     boolean saveBatchCourseTeacher(String courseId, String[] tidArr);
+
+    boolean deleteTeacherCourse(String tid, String cid);
 }
 
 

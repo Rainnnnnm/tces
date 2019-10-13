@@ -10,23 +10,21 @@
         <result property="courseName" column="course_name"/>
         <collection property="userList" ofType="com.gcxy.tces.entity.User" javaType="list">
             <id property="userId" column="user_id"/>
-            <result property="userSex" column="user_sex"/>
             <result property="userName" column="user_name"/>
         </collection>
     </resultMap>
 
-    <!--&lt;!&ndash;根据班级id查询课程信息嵌套教师信息&ndash;&gt;-->
-    <!--<select id="selectCoursesByCid" resultMap="courseNestedTeachMap">-->
-        <!--select *-->
-        <!--from user_course uc, course c, user u-->
-        <!--where uc.user_ID = u.user_ID and c.Course_ID = uc.Course_ID-->
-              <!--and c.Course_ID = #{cid}-->
-    <!--</select>-->
+    <!--根据班级id查询课程和教师-->
+    <select id="selectCourseTeacher" resultMap="courseNestedTeachMap">
+        select *
+        from user_course_clazz ucc join user u on ucc.user_id = u.user_ID
+            join course c on ucc.user_id = c.Course_ID
+        where ucc.clazz_id = #{cid}
+    </select>
 
-    <!--&lt;!&ndash;根据学生id查询所在班级id&ndash;&gt;-->
-    <!--<select id="selectCidBySid" resultType="com.gcxy.tces.entity.Course">-->
-        <!--select c.Course_ID as courseId-->
-        <!--from user_course uc, course c-->
-        <!--where uc.Course_ID = c.Course_ID and uc.user_ID = #{sid}-->
-    <!--</select>-->
+    <select id="selectClazzIdByUid" resultType="com.gcxy.tces.entity.Clazz">
+        SELECT Clazz_ID clazzId
+        from user_course_clazz
+        where user_id = #{uid}
+    </select>
 </mapper>
