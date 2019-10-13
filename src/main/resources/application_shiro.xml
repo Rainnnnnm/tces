@@ -40,13 +40,6 @@
     <!--spring管理shiro对象生命周期-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
-    <!--开启shiro注解-->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor"/>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
-
 
     <!--shiro过滤器-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -69,7 +62,8 @@
             <!-- url = 过滤器 -->
             <!--anon无需认证即可访问-->
             <!--authc需认证可访问-->
-            <value>
+            <!--
+                生成环境使用
                 /js/** = anon
                 /images/** = anon
                 /css/** = anon
@@ -81,6 +75,9 @@
                 /*.html = anon
                 /fonts/** = anon
                 # everything else requires authentication:
+                /** = authc
+            -->
+            <value>
                 /** = anon
             </value>
         </property>

@@ -10,6 +10,7 @@
 
     <!--扫描包-->
     <context:component-scan base-package="com.gcxy.tces.controller"/>
+    <context:component-scan base-package="com.gcxy.tces.controller.exception"/>
     <!--<context:component-scan base-package="com.lh.service"/>-->
 
     <mvc:annotation-driven>
@@ -48,5 +49,12 @@
             <!--<bean class="com.gcxy.tces.common.interceptor.AuthInterceptor"/>-->
         <!--</mvc:interceptor>-->
     <!--</mvc:interceptors>-->
+
+    <!--开启shiro注解，必须放在spring mvc配置文件中，依赖mvc的aop-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
 
 </beans>

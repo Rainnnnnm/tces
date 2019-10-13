@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gcxy.tces.entity.User;
 import com.gcxy.tces.service.StudentService;
+import com.gcxy.tces.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class FileUploadListener extends AnalysisEventListener<User> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadListener.class);
-    private StudentService service;
+    private UserService service;
     /**
      * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
      */
@@ -31,7 +32,7 @@ public class FileUploadListener extends AnalysisEventListener<User> {
      * 构造方法初始化service
      * @param service service
      */
-    public FileUploadListener(StudentService service){
+    public FileUploadListener(UserService service){
         this.service = service;
     }
 
@@ -59,6 +60,10 @@ public class FileUploadListener extends AnalysisEventListener<User> {
         }
     }
 
+    /**
+     * 解析完成后的处理方法
+     * @param context
+     */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
         if(list.size() > 0){
@@ -74,7 +79,7 @@ public class FileUploadListener extends AnalysisEventListener<User> {
      * 进行数据持久化操作
      */
     private void saveData(){
-        service.saveBatchStudent(list);
+        service.saveBatchUser(list);
     }
 
 }

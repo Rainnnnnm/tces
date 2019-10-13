@@ -1,5 +1,7 @@
 package com.gcxy.tces.common.shiro;
 
+import com.gcxy.tces.entity.Auth;
+import com.gcxy.tces.entity.Role;
 import com.gcxy.tces.entity.User;
 import com.gcxy.tces.service.UserService;
 import org.apache.shiro.authc.*;
@@ -8,6 +10,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Rain
@@ -29,11 +35,16 @@ public class UserRealm extends AuthorizingRealm {
         if(principals == null || principals.getPrimaryPrincipal() == null){
             return null;
         }
-
+        String userCode = (String) principals.getPrimaryPrincipal();
+        Set<String> permissions = getPermissionsByUserCode(userCode);
+        Set<String> roles = getRolesByUserCode(userCode);
         //SimpleAuthorizationInfo对象保存用户的权限与角色信息
         //SimpleAuthorizationInfo构造方法接收一个权限set
         // 返回该对象后shiro会进行用户授权操作
-        return new SimpleAuthorizationInfo();
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        authorizationInfo.setRoles(roles);
+        authorizationInfo.setStringPermissions(permissions);
+        return authorizationInfo;
     }
 
 
@@ -63,5 +74,34 @@ public class UserRealm extends AuthorizingRealm {
         //返回认证信息对象后会与token中用户的信息进行比较，进行认证操作
         //密码不正确抛出：IncorrectCredentialsException凭证不匹配异常
         return new SimpleAuthenticationInfo(user.getUserCode(), user.getUserPass(), this.getName());
+    }
+
+    /**
+     * 通过用户名获取角色信息集合
+     * @param userCode 用户名
+     * @return set
+     */
+    private Set<String> getRolesByUserCode(String userCode){
+        List<Role> roleList = userService.getRolesByUserCode(userCode);
+        Set<String> roles = new HashSet<>();
+        //把所拥有的角色名添加到集合中
+        for(Role role : roleList){
+            roles.add(role.getRoleName());
+        }
+        return roles;
+    }
+
+    /**
+     * 通过用户名获取权限信息集合
+     * @param userCode 用户名
+     * @return set
+     */
+    private Set<String> getPermissionsByUserCode(String userCode){
+        List<Auth> authList = userService.getAuthsByUserCode(userCode);
+        Set<String> perms = new HashSet<>();
+        for(Auth auth : authList){
+            perms.add(auth.getAuthUrl());
+        }
+        return perms;
     }
 }

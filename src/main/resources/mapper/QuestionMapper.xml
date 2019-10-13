@@ -20,11 +20,11 @@
 
 
     <insert id="addQuestion" parameterType="com.gcxy.tces.entity.Question">
-        insert into question(user_ID, type_id, Question) VALUES (#{userId},#{tyoeId},#{question})
+        insert into question(user_ID, type_id, Question) VALUES (#{userId},#{typeId},#{question})
     </insert>
 
     <update id="updateQuestion" parameterType="com.gcxy.tces.entity.Question">
-        update question set user_ID = #{userId} where question_id = #{questionId}
+        update question set question = #{question} where question_id = #{questionId}
     </update>
 
     <delete id="deleteQuestion" parameterType="String">

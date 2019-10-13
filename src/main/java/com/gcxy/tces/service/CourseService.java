@@ -50,6 +50,22 @@ public interface CourseService {
      * @return
      */
     boolean removeCourseById(String courseId);
+
+    /**
+     * 保存课程与教师的关联关系
+     * @param courseId
+     * @param tid
+     * @return boolean
+     */
+    boolean saveCourseTeacher(String courseId, String tid);
+
+    /**
+     * 批量保存课程与教师关联
+     * @param courseId 课程id
+     * @param tidArr 教师id数组
+     * @return boolean
+     */
+    boolean saveBatchCourseTeacher(String courseId, String[] tidArr);
 }
 
 

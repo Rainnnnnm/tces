@@ -27,28 +27,36 @@ public interface CourseMapper {
     /**
      * 根据关键字模糊查询课程
      * @param key 关键字
-     * @return
+     * @return list
      */
     List<Course> selectCoursesByKey(String key);
 
     /**
      * 根据id修改课程信息
      * @param course 课程信息
-     * @return
+     * @return int
      */
     int updateCourseById(Course course);
 
     /**
      * 插入课程信息
      * @param course 课程实体
-     * @return
+     * @return int
      */
     int insertCourse(Course course);
 
     /**
      * 根据id删除课程
      * @param courseId 课程id
-     * @return
+     * @return int
      */
     int deleteCourseById(String courseId);
+
+    /**
+     * 插入课程与用户的关联关系
+     * @param courseId 课程id
+     * @param userId 用户id
+     * @return int
+     */
+    int insertCourseUser(String courseId, String userId);
 }
