@@ -178,4 +178,19 @@ public class CourseController {
         }
         return resultMap;
     }
+
+    @GetMapping("/teacher")
+    @ResponseBody
+    public Map<String, Object> removeTeacherCourse(String tid, String cid){
+        Map<String, Object> resultMap = new HashMap<>();
+        boolean b = courseService.deleteTeacherCourse(tid, cid);
+        if (b) {
+            resultMap.put("status", 200);
+            resultMap.put("data", "移除关联成功");
+        } else {
+            resultMap.put("status", 500);
+            resultMap.put("data", "移除关联失败");
+        }
+        return resultMap;
+    }
 }

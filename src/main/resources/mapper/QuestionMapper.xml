@@ -6,21 +6,29 @@
 <mapper namespace="com.gcxy.tces.mapper.QuestionMapper">
 
     <select id="selectQuestion" parameterType="String" resultMap="questionMap">
-        select * from question where Question like "%"#{question}"%"
+        select question_id, user_ID,Question,t.type_id,t.type_name,test_type
+        from question q left join type t on t.type_id = q.type_id
+        where question like "%"#{question}"%"
     </select>
 
     <resultMap id="questionMap" type="com.gcxy.tces.entity.Question">
         <id column="question_id" property="questionId"></id>
         <result column="question" property="question"></result>
-        <association property="user" javaType="com.gcxy.tces.entity.Type">
+        <result property="testType" column="test_type"></result>
+        <association property="type" javaType="com.gcxy.tces.entity.Type">
             <id column="type_id" property="typeId"></id>
             <result column="type_name" property="typeName"></result>
         </association>
     </resultMap>
 
+    <!--根据id查询问题-->
+    <select id="selectQuestionById" parameterType="String" resultMap="questionMap">
+        select * from question where question_id = #{questionId}
+    </select>
+
 
     <insert id="addQuestion" parameterType="com.gcxy.tces.entity.Question">
-        insert into question(user_ID, type_id, Question) VALUES (#{userId},#{typeId},#{question})
+        insert into question(user_ID, type_id, Question,test_type) VALUES (#{user.userId},#{type.typeId},#{question},#{testType})
     </insert>
 
     <update id="updateQuestion" parameterType="com.gcxy.tces.entity.Question">
@@ -30,4 +38,12 @@
     <delete id="deleteQuestion" parameterType="String">
         delete from question where question_id = #{questionId}
     </delete>
+
+    <select id="selectType" resultMap="type">
+        select * from type
+    </select>
+    <resultMap id="type" type="com.gcxy.tces.entity.Type">
+        <id column="type_id" property="typeId"></id>
+        <result column="type_name" property="typeName"></result>
+    </resultMap>
 </mapper>

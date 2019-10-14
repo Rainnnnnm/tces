@@ -1,6 +1,7 @@
 package com.gcxy.tces.mapper;
 
 import com.gcxy.tces.entity.Question;
+import com.gcxy.tces.entity.Type;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface QuestionMapper {
     int updateQuestion(Question question);
 
     int deleteQuestion(String questionId);
+
+    List<Type> selectType();
+
+    Question selectQuestionById(String questionId);
 }

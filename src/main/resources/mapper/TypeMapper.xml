@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcxy.tces.mapper.TypeMapper">
+    <resultMap id="typeMap" type="com.gcxy.tces.entity.Type">
+        <id property="typeId" column="type_id"/>
+        <id property="typeName" column="type_name"/>
+    </resultMap>
+
+    <select id="selectAllType" resultMap="typeMap">
+        select * from type
+    </select>
+
+    <select id="selectTypeByKey" resultMap="typeMap">
+        select * from type where type_name like concat('%',#{key},'%')
+    </select>
+
+    <insert id="insertType" keyProperty="typeId" useGeneratedKeys="true">
+        insert into type(type_name) values(#{typeName})
+    </insert>
+
+    <update id="updateType">
+        update type set type_name = #{typeName} where type_id = #{typeId}
+    </update>
+
+    <delete id="deleteTypeById">
+        delete from type where type_id = #{typeId}
+    </delete>
+
+
+
+</mapper>

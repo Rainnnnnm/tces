@@ -129,7 +129,12 @@
                 <li class="active"><a href="course.html"><i class="icon-interface-windows"></i>课程管理 </a></li>
                 <li><a href="department.html"> <i class="icon-padnote"></i>院系管理 </a></li>
                 <li><a href="clazz.html"> <i class="icon-form"></i>班级管理 </a></li>
-                <li><a href="evaluation.html"> <i class="icon-list"></i>评价指标 </a></li>
+                <li><a href="#evaluation" aria-expanded="false" data-toggle="collapse"> <i class="icon-list"></i>评价指标 </a>
+                    <ul id="evaluation" class="collapse list-unstyled ">
+                        <li><a href="question.html">题目管理</a></li>
+                        <li><a href="type.html">题型管理</a></li>
+                    </ul>
+                </li>
             </ul>
             <!--<span class="heading">Extras</span>-->
             <!--<ul class="list-unstyled">-->
@@ -171,7 +176,7 @@
                                 </div>
 
                                 <div class="card-header d-flex align-items-center">
-                                    <h3 class="h4">课程资料</h3>
+                                    <h3 class="h4">课程信息</h3>
                                 </div>
 
                                 <div class="card-body">
@@ -221,10 +226,7 @@
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-close">
-                                    <div class="dropdown">
-                                        <button type="button" id="closeCard2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
-                                        <div aria-labelledby="closeCard2" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
-                                    </div>
+                                    <button id="selectTeacher" class="btn-success btn btn-sm">+ 添加教师 </button>
                                 </div>
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">教师</h3>
@@ -264,6 +266,43 @@
     </div>
 </div>
 
+<div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTeacherTitle">教师信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr style="text-align: center">
+                        <th>#</th>
+                        <th>名 称</th>
+                        <th>操 作</th>
+                    </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>jack</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" type="button">添加</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+                <!--<button type="button" class="btn btn-success">+ 新增</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
 
 <!-- JavaScript files-->
 <script src="../plugins/jquery/jquery-3.4.0.js"></script>
@@ -274,12 +313,72 @@
 <script src="../js/utils.js"></script>
 <script>
     $(function () {
-
+        reIndex($("#addTeacherModal table tr"));
         //加载页面数据
         loadCourseMessage();
 
         //执行表格编辑处理器
         tableEditHandler($("#msgTab"));
+
+        /**
+         * 给添加教师按钮添加
+         */
+        $("#selectTeacher").bind("click", function () {
+            var tbody = $("#addTeacherModal tbody");
+            //清空
+            tbody.empty();
+            //发送异步请求查询教师
+            $.ajax({
+                url:"../teacher/all",
+                type:"get",
+                dataType:"json",
+                data:{cid:$("#save").attr("btn-data")},
+                success:function (data) {
+                    console.log(data);
+                    if(data == null || data.length <= 0){
+                       tbody.html("无数据");
+                    }else{
+                        //添加数据到表格中
+                        data.forEach(function (teacher) {
+                            var trObj = $("<tr>\n" +
+                                "<th scope=\"row\">1</th>\n" +
+                                "<td>"+teacher.userName+"</td>\n" +
+                                "<td>\n" +
+                                "<button class=\"btn btn-info btn-sm\" btn-data='"+teacher.userId+"'>添加</button>\n" +
+                                "</td>\n" +
+                                "</tr>");
+                            tbody.append(trObj);
+                        })
+                    }
+                }
+            });
+
+            //把数据添加到模态框
+            //显示模态框
+            $("#addTeacherModal").modal("show");
+        });
+
+        /**
+         * 给每个添加按钮动态绑定事件
+         */
+        $("#addTeacherModal table").on("click", "button", function () {
+            var that = $(this);
+            //发送请求进行添加
+            $.ajax({
+                url: "../teacher/course",
+                type: "get",
+                dataType: "json",
+                data: {
+                    cid:$("#save").attr("btn-data"),
+                    tid:that.attr("btn-data")
+                },
+                success: function (data) {
+                    console.log(data);
+                    $("#addTeacherModal").modal("hide");
+                    alert(data.data);
+                }
+            });
+        });
 
         /**
          *  为保存按钮注册事件
@@ -320,39 +419,13 @@
          */
         $("#clazzTab").on("click", "button", function () {
             var cid = $(this).attr("data");
-            var uid = $("#save").attr("btn-data");
+            var tid = $("#save").attr("btn-data");
             var that = $(this).parent().parent();
-            $.ajax({
+            /*$.ajax({
                 url:"../user/clazz",
                 type:"get",
                 dataType:"json",
-                data:{cid:cid, uid:uid},
-                success:function (data) {
-                    if(data.status === 200){
-                        alert("移除成功");
-                        that.remove();
-                    }else{
-                        alert("移除失败");
-                    }
-                }
-            });
-        });
-
-        /**
-         * 动态绑定教师移除按钮事件
-         */
-        $("#teacherTab").on("click", "button", function () {
-            //获取教师id和课程id
-            var uid = $(this).attr("data");
-            var cid = $("#save").attr("btn-data");
-            var that = $(this).parent().parent();
-            alert("移除成功");
-            that.remove();
-            /*$.ajax({
-                url:"../user/course",
-                type:"get",
-                dataType:"json",
-                data:{cid:cid, uid:uid},
+                data:{cid:cid, tid:tid},
                 success:function (data) {
                     if(data.status === 200){
                         alert("移除成功");
@@ -362,6 +435,30 @@
                     }
                 }
             });*/
+        });
+
+        /**
+         * 动态绑定教师移除按钮事件
+         */
+        $("#teacherTab").on("click", "button", function () {
+            //获取教师id和课程id
+            var tid = $(this).attr("data");
+            var cid = $("#save").attr("btn-data");
+            var that = $(this).parent().parent();
+            $.ajax({
+                url:"../course/teacher",
+                type:"get",
+                dataType:"json",
+                data:{cid:cid, tid:tid},
+                success:function (data) {
+                    if(data.status === 200){
+                        alert(data.data);
+                        that.remove();
+                    }else{
+                        alert(data.data);
+                    }
+                }
+            });
         });
         /**
          * 为登出按钮注册事件
@@ -455,6 +552,8 @@
             });
         });
     }
+
+
 
 
     /**
