@@ -972,7 +972,9 @@
     <table id="248" parent="22" name="clazz"/>
     <table id="249" parent="22" name="course"/>
     <table id="250" parent="22" name="department"/>
-    <table id="251" parent="22" name="grade"/>
+    <table id="251" parent="22" name="grade">
+      <Comment>教师总成绩表</Comment>
+    </table>
     <table id="252" parent="22" name="question"/>
     <table id="253" parent="22" name="role">
       <Comment>角色表</Comment>
@@ -980,15 +982,18 @@
     <table id="254" parent="22" name="role_auth">
       <Comment>角色权限关联表</Comment>
     </table>
-    <table id="255" parent="22" name="type"/>
-    <table id="256" parent="22" name="user"/>
-    <table id="257" parent="22" name="user_course_clazz">
+    <table id="255" parent="22" name="score">
+      <Comment>评价详情表</Comment>
+    </table>
+    <table id="256" parent="22" name="type"/>
+    <table id="257" parent="22" name="user"/>
+    <table id="258" parent="22" name="user_course_clazz">
       <Comment>教师课程班级关联表</Comment>
     </table>
-    <table id="258" parent="22" name="user_role">
+    <table id="259" parent="22" name="user_role">
       <Comment>用户角色关联表</Comment>
     </table>
-    <column id="259" parent="247" name="auth_id">
+    <column id="260" parent="247" name="auth_id">
       <Position>1</Position>
       <Comment>权限标识</Comment>
       <DataType>int(11)|0s</DataType>
@@ -996,215 +1001,228 @@
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="247" name="auth_name">
+    <column id="261" parent="247" name="auth_name">
       <Position>2</Position>
       <Comment>权限名称</Comment>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="247" name="auth_url">
+    <column id="262" parent="247" name="auth_url">
       <Position>3</Position>
       <Comment>资源地址</Comment>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="262" parent="247" name="PRIMARY">
+    <key id="263" parent="247" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>auth_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="263" parent="248" name="Clazz_ID">
+    <column id="264" parent="248" name="Clazz_ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="264" parent="248" name="depart_id">
+    <column id="265" parent="248" name="depart_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="248" name="Clazz_name">
+    <column id="266" parent="248" name="Clazz_name">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="266" parent="248" name="FK_dept_course">
+    <index id="267" parent="248" name="FK_dept_course">
       <ColNames>depart_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="267" parent="248" name="PRIMARY">
+    <key id="268" parent="248" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Clazz_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="268" parent="248" name="FK_dept_course">
+    <foreign-key id="269" parent="248" name="FK_dept_course">
       <ColNames>depart_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>department</RefTableName>
       <RefColNames>depart_id</RefColNames>
     </foreign-key>
-    <column id="269" parent="249" name="Course_ID">
+    <column id="270" parent="249" name="Course_ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="270" parent="249" name="Course_name">
+    <column id="271" parent="249" name="Course_name">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="271" parent="249" name="PRIMARY">
+    <key id="272" parent="249" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Course_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="272" parent="250" name="depart_id">
+    <column id="273" parent="250" name="depart_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="273" parent="250" name="depart_name">
+    <column id="274" parent="250" name="depart_name">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="274" parent="250" name="PRIMARY">
+    <key id="275" parent="250" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>depart_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="275" parent="251" name="Grade_ID">
+    <column id="276" parent="251" name="Grade_ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="276" parent="251" name="Course_ID">
+    <column id="277" parent="251" name="Course_ID">
       <Position>2</Position>
+      <Comment>课程id</Comment>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="277" parent="251" name="user_ID">
+    <column id="278" parent="251" name="teacher_ID">
       <Position>3</Position>
+      <Comment>教师id</Comment>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="278" parent="251" name="score">
+    <column id="279" parent="251" name="avg_score">
       <Position>4</Position>
-      <Comment>分数</Comment>
+      <Comment>教师在该课程的平均分</Comment>
       <DataType>float|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="279" parent="251" name="user_type">
+    <column id="280" parent="251" name="grade_type">
       <Position>5</Position>
-      <DataType>tinyint(4)|0s</DataType>
+      <Comment>成绩类型, 0:学生， 1:同行</Comment>
+      <DataType>char(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="280" parent="251" name="FK_course_grade">
+    <index id="281" parent="251" name="FK_course_grade">
       <ColNames>Course_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="281" parent="251" name="FK_user_grade">
-      <ColNames>user_ID</ColNames>
+    <index id="282" parent="251" name="FK_user_grade">
+      <ColNames>teacher_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="282" parent="251" name="PRIMARY">
+    <key id="283" parent="251" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Grade_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="283" parent="251" name="FK_course_grade">
+    <foreign-key id="284" parent="251" name="FK_course_grade">
       <ColNames>Course_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>course</RefTableName>
       <RefColNames>Course_ID</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="284" parent="251" name="FK_user_grade">
-      <ColNames>user_ID</ColNames>
+    <foreign-key id="285" parent="251" name="FK_user_grade">
+      <ColNames>teacher_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>user_ID</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="285" parent="252" name="question_id">
+    <column id="286" parent="252" name="question_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="286" parent="252" name="user_ID">
+    <column id="287" parent="252" name="user_ID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="287" parent="252" name="type_id">
+    <column id="288" parent="252" name="type_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="288" parent="252" name="Question">
+    <column id="289" parent="252" name="Question">
       <Position>4</Position>
       <DataType>varchar(25)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="289" parent="252" name="FK_user_question">
+    <column id="290" parent="252" name="test_type">
+      <Position>5</Position>
+      <Comment>问卷类型 0学生评价，1同行评价</Comment>
+      <DataType>char(1)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="291" parent="252" name="FK_user_question">
       <ColNames>user_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="290" parent="252" name="FK_question_type">
+    <index id="292" parent="252" name="FK_question_type">
       <ColNames>type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="291" parent="252" name="PRIMARY">
+    <key id="293" parent="252" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>question_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="292" parent="252" name="FK_user_question">
+    <foreign-key id="294" parent="252" name="FK_user_question">
       <ColNames>user_ID</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>user_ID</RefColNames>
     </foreign-key>
-    <foreign-key id="293" parent="252" name="FK_question_type">
+    <foreign-key id="295" parent="252" name="FK_question_type">
       <ColNames>type_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>type</RefTableName>
       <RefColNames>type_id</RefColNames>
     </foreign-key>
-    <column id="294" parent="253" name="role_id">
+    <column id="296" parent="253" name="role_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="253" name="role_name">
+    <column id="297" parent="253" name="role_name">
       <Position>2</Position>
       <Comment>角色名</Comment>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="296" parent="253" name="PRIMARY">
+    <key id="298" parent="253" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>role_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="297" parent="254" name="Id">
+    <column id="299" parent="254" name="Id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="298" parent="254" name="role_id">
+    <column id="300" parent="254" name="role_id">
       <Position>2</Position>
       <Comment>引用角色id</Comment>
       <DataType>int(11)|0s</DataType>
@@ -1212,7 +1230,7 @@
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="254" name="auth_id">
+    <column id="301" parent="254" name="auth_id">
       <Position>3</Position>
       <Comment>引用权限id</Comment>
       <DataType>int(11)|0s</DataType>
@@ -1220,20 +1238,20 @@
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="300" parent="254" name="FK_roleAuth_roleId">
+    <index id="302" parent="254" name="FK_roleAuth_roleId">
       <ColNames>role_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="301" parent="254" name="FK_roleAuth_authId">
+    <index id="303" parent="254" name="FK_roleAuth_authId">
       <ColNames>auth_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="302" parent="254" name="PRIMARY">
+    <key id="304" parent="254" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="303" parent="254" name="FK_roleAuth_roleId">
+    <foreign-key id="305" parent="254" name="FK_roleAuth_roleId">
       <ColNames>role_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>role</RefTableName>
@@ -1241,7 +1259,7 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="304" parent="254" name="FK_roleAuth_authId">
+    <foreign-key id="306" parent="254" name="FK_roleAuth_authId">
       <ColNames>auth_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>auth</RefTableName>
@@ -1249,90 +1267,150 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="305" parent="255" name="type_id">
+    <column id="307" parent="255" name="score_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="255" name="type_name">
+    <column id="308" parent="255" name="teacher_id">
       <Position>2</Position>
-      <DataType>varchar(12)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="307" parent="255" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>type_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="308" parent="256" name="user_ID">
-      <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="309" parent="256" name="user_Name">
-      <Position>2</Position>
-      <DataType>varchar(20)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="310" parent="256" name="user_Password">
-      <Position>3</Position>
-      <Comment>MD5密码</Comment>
-      <DataType>varchar(32)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="311" parent="256" name="user_sex">
-      <Position>4</Position>
-      <Comment>用户性别，1男生、0女生</Comment>
-      <DataType>char(1)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="312" parent="256" name="user_type">
-      <Position>5</Position>
-      <Comment>用户类型，0学生、1老师、2管理员</Comment>
-      <DataType>tinyint(3)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="313" parent="256" name="user_code">
-      <Position>6</Position>
-      <Comment>学号</Comment>
-      <DataType>varchar(10)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="314" parent="256" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>user_ID</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="315" parent="257" name="Id">
-      <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="316" parent="257" name="user_id">
-      <Position>2</Position>
-      <Comment>用户id</Comment>
+      <Comment>教师id</Comment>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="257" name="course_Id">
+    <column id="309" parent="255" name="course_id">
       <Position>3</Position>
       <Comment>课程id</Comment>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="257" name="clazz_id">
+    <column id="310" parent="255" name="single_score">
+      <Position>4</Position>
+      <Comment>单个用户的打分</Comment>
+      <DataType>float|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="311" parent="255" name="user_type">
+      <Position>5</Position>
+      <Comment>打分用户类型</Comment>
+      <DataType>tinyint(3)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="312" parent="255" name="FK_user_score">
+      <ColNames>teacher_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="313" parent="255" name="FK_course_score">
+      <ColNames>course_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="314" parent="255" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>score_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="315" parent="255" name="FK_user_score">
+      <ColNames>teacher_id</ColNames>
+      <RefSchemaName>tces</RefSchemaName>
+      <RefTableName>user</RefTableName>
+      <RefColNames>user_ID</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="316" parent="255" name="FK_course_score">
+      <ColNames>course_id</ColNames>
+      <RefSchemaName>tces</RefSchemaName>
+      <RefTableName>course</RefTableName>
+      <RefColNames>Course_ID</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="317" parent="256" name="type_id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="318" parent="256" name="type_name">
+      <Position>2</Position>
+      <DataType>varchar(12)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="319" parent="256" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>type_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="320" parent="257" name="user_ID">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="321" parent="257" name="user_Name">
+      <Position>2</Position>
+      <DataType>varchar(20)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="322" parent="257" name="user_Password">
+      <Position>3</Position>
+      <Comment>MD5密码</Comment>
+      <DataType>varchar(32)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="323" parent="257" name="user_sex">
+      <Position>4</Position>
+      <Comment>用户性别，1男生、0女生</Comment>
+      <DataType>char(1)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="324" parent="257" name="user_type">
+      <Position>5</Position>
+      <Comment>用户类型，0学生、1老师、2管理员</Comment>
+      <DataType>tinyint(3)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="325" parent="257" name="user_code">
+      <Position>6</Position>
+      <Comment>学号</Comment>
+      <DataType>varchar(10)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="326" parent="257" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="327" parent="258" name="Id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="328" parent="258" name="user_id">
+      <Position>2</Position>
+      <Comment>用户id</Comment>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="329" parent="258" name="course_Id">
+      <Position>3</Position>
+      <Comment>课程id</Comment>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="330" parent="258" name="clazz_id">
       <Position>4</Position>
       <Comment>班级id</Comment>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="319" parent="257" name="AK_ucc">
+    <index id="331" parent="258" name="AK_ucc">
       <Comment>教师课程和班级唯一键约束</Comment>
       <ColNames>user_id
 course_Id
@@ -1340,22 +1418,22 @@ clazz_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="320" parent="257" name="FK_ucc_clazzId">
+    <index id="332" parent="258" name="FK_ucc_clazzId">
       <ColNames>clazz_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="321" parent="257" name="PRIMARY">
+    <key id="333" parent="258" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="322" parent="257" name="AK_ucc">
+    <key id="334" parent="258" name="AK_ucc">
       <ColNames>user_id
 course_Id
 clazz_id</ColNames>
       <UnderlyingIndexName>AK_ucc</UnderlyingIndexName>
     </key>
-    <foreign-key id="323" parent="257" name="FK_ucc_courseId">
+    <foreign-key id="335" parent="258" name="FK_ucc_courseId">
       <ColNames>user_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>course</RefTableName>
@@ -1363,7 +1441,7 @@ clazz_id</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="324" parent="257" name="FK_ucc_userId">
+    <foreign-key id="336" parent="258" name="FK_ucc_userId">
       <ColNames>user_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>user</RefTableName>
@@ -1371,7 +1449,7 @@ clazz_id</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="325" parent="257" name="FK_ucc_clazzId">
+    <foreign-key id="337" parent="258" name="FK_ucc_clazzId">
       <ColNames>clazz_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>clazz</RefTableName>
@@ -1379,14 +1457,14 @@ clazz_id</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="326" parent="258" name="Id">
+    <column id="338" parent="259" name="Id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="327" parent="258" name="user_id">
+    <column id="339" parent="259" name="user_id">
       <Position>2</Position>
       <Comment>引用用户id</Comment>
       <DataType>int(11)|0s</DataType>
@@ -1394,7 +1472,7 @@ clazz_id</ColNames>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="328" parent="258" name="role_id">
+    <column id="340" parent="259" name="role_id">
       <Position>3</Position>
       <Comment>引用角色id</Comment>
       <DataType>int(11)|0s</DataType>
@@ -1402,20 +1480,20 @@ clazz_id</ColNames>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="329" parent="258" name="FK_userRole_userId">
+    <index id="341" parent="259" name="FK_userRole_userId">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="330" parent="258" name="FK_userRole_roleId">
+    <index id="342" parent="259" name="FK_userRole_roleId">
       <ColNames>role_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="331" parent="258" name="PRIMARY">
+    <key id="343" parent="259" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="332" parent="258" name="FK_userRole_userId">
+    <foreign-key id="344" parent="259" name="FK_userRole_userId">
       <ColNames>user_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>user</RefTableName>
@@ -1423,7 +1501,7 @@ clazz_id</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="333" parent="258" name="FK_userRole_roleId">
+    <foreign-key id="345" parent="259" name="FK_userRole_roleId">
       <ColNames>role_id</ColNames>
       <RefSchemaName>tces</RefSchemaName>
       <RefTableName>role</RefTableName>

@@ -1,9 +1,7 @@
 package com.gcxy.tces.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
-import com.gcxy.tces.entity.Clazz;
-import com.gcxy.tces.entity.Course;
-import com.gcxy.tces.entity.User;
+import com.gcxy.tces.entity.*;
 import com.gcxy.tces.mapper.StudentMapper;
 import com.gcxy.tces.service.StudentService;
 import com.github.pagehelper.Page;
@@ -34,4 +32,36 @@ public class StudentServiceImpl implements StudentService {
     private StudentMapper studentMapper;
 
 
+    @Override
+    public List<Course> getCourseTeacherInClazz(String cid) {
+        //在根据班级id查出该班级的所有课程及任课老师
+        List<Course> courses = studentMapper.selectCourseTeacher(cid);
+        return courses;
+    }
+
+    @Override
+    public Clazz getClazz(String uid) {
+        return studentMapper.selectClazzByUid(uid);
+    }
+
+    @Override
+    public List<Question> getQuestionsByTestType(String testType) {
+        return studentMapper.selectQuestionsByTestType(testType);
+    }
+
+    @Override
+    public boolean saveScore(Score score) {
+        return studentMapper.insertScore(score) > 0;
+    }
+
+    @Override
+    public List<Grade> getGrades(String tid) {
+        return studentMapper.selectGradesByTid(tid);
+    }
+
+    @Override
+    public boolean openEvaluate() {
+
+        return true;
+    }
 }

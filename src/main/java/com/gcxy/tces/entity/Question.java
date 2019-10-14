@@ -8,6 +8,7 @@ public class Question {
     private User user;//出题人信息
     private Type type;
     private String question;
+    private String testType;
 
     public String getQuestionId() {
         return questionId;
@@ -39,5 +40,13 @@ public class Question {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public String getTestType() {
+        return testType;
+    }
+
+    public void setTestType(String testType) {
+        this.testType = testType;
     }
 }

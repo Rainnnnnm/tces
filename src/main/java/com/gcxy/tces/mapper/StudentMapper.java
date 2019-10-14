@@ -1,8 +1,6 @@
 package com.gcxy.tces.mapper;
 
-import com.gcxy.tces.entity.Clazz;
-import com.gcxy.tces.entity.Course;
-import com.gcxy.tces.entity.User;
+import com.gcxy.tces.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +13,12 @@ import java.util.List;
 @Repository
 public interface StudentMapper {
     List<Course> selectCourseTeacher(String cid);
-    Clazz selectClazzIdByUid(String uid);
+
+    Clazz selectClazzByUid(String uid);
+
+    List<Question> selectQuestionsByTestType(String testType);
+
+    int insertScore(Score score);
+
+    List<Grade> selectGradesByTid(String tid);
 }
