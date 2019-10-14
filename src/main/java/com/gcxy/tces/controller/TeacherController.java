@@ -22,12 +22,23 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+    /**
+     * 查询所有未选该课的教师
+     * @param cid 课程id
+     * @return json
+     */
     @GetMapping("/all")
     @ResponseBody
     public List<User> getTeacher(String cid){
         return teacherService.getTeacher(cid);
     }
 
+    /**
+     * 把教师添加到该课程
+     * @param tid 教师id
+     * @param cid 课程id
+     * @return json
+     */
     @GetMapping("/course")
     @ResponseBody
     public Map<String, Object> saveTeacherCourse(String tid, String cid){

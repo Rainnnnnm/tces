@@ -5,8 +5,8 @@ package com.gcxy.tces.entity;
  */
 public class Grade {
     private String gradeId;
-    private String score;//分数
-    private String userType;//评分人类型
+    private String avgScore;//该门课的平均分数
+    private String gradeType;//成绩类型
     private Course course;//被评分人课程
     private User user;//被评分的教师
 
@@ -18,20 +18,20 @@ public class Grade {
         this.gradeId = gradeId;
     }
 
-    public String getScore() {
-        return score;
+    public String getAvgScore() {
+        return avgScore;
     }
 
-    public void setScore(String score) {
-        this.score = score;
+    public void setAvgScore(String avgScore) {
+        this.avgScore = avgScore;
     }
 
-    public String getUserType() {
-        return userType;
+    public String getGradeType() {
+        return gradeType;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setGradeType(String gradeType) {
+        this.gradeType = gradeType;
     }
 
     public Course getCourse() {

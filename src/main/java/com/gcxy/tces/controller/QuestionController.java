@@ -32,7 +32,7 @@ public class QuestionController {
      * @param pageSize
      * @return
      */
-    @RequestMapping("search")
+    @RequestMapping("/search")
     @ResponseBody
     public Object queryQuestion(String question, String pageNum, String pageSize){
         return new PageInfo(questionService.selectQuestion(question,Integer.parseInt(pageNum),Integer.parseInt(pageSize)));

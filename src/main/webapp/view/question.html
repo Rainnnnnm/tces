@@ -308,7 +308,14 @@
                 <form id="updateQuestionForm">
                     <div class="form-group">
                         <label for="questionName">题目名称：</label>
-                        <input type="text" class="form-control" name="question" id="question" placeholder="请输题目名">
+                        <input type="text" class="form-control" name="question" id="question">
+                        <label for="questionName">题目类型：</label>
+                        <select id="typeSelect"class="custom-select" name="testType" style="color: #adadad;">
+                            <option value="0">学生评价</option>
+                            <option value="1">教师评价</option>
+                        </select>
+                        <label for="questionName">出题人：</label>
+                        <input type="text" class="form-control" name="username" id="username">
                     </div>
                 </form>
             </div>
@@ -440,6 +447,11 @@
          * 向table添加数据
          */
         function addDataToTable (data) {
+            if(data.testType === "0"){
+                data.testType = "学生评价"
+            }else{
+                data.testType = "教师评价"
+            }
             i++;
             //创建一个tr
             var trObj = $("<tr>\n" +
@@ -528,8 +540,15 @@
                     console.log(data);
                     //do dom操作
                     //清空tbody
+                    if(data.testType==="0"){
+                        data.testType = "学生评价"
+                    }else{
+                        data.testType = "教师评价"
+                    }
                     $("tbody").empty();
                     $("#question").val(data.question);
+                    $("#username").val(data.user.userName);
+                    $("#testtypeu").val(data.testType);
                     $("#updateQuestion").attr("dataId",data.questionId)
                 }
             });
@@ -547,7 +566,11 @@
                 type:"post",
                 dataType:"json",
                 //传入原生表单对象构建一个FormData对象
-                data:{questionId:$("#updateQuestion").attr("dataId"),question:$("#question").val()},
+                data:{
+                    questionId:$("#updateQuestion").attr("dataId"),
+                    question:$("#question").val(),
+                    testType:$("#typeSelect").val()
+                },
                 //成功回调方法
                 success:function (data) {
                     if(data.status === "1"){
@@ -717,6 +740,136 @@
             });
         });
 
+        /**
+         * 为上一页注册事件
+         */
+        $(".pagination .page-link:first").bind("click", function () {
+            var currentPage = $(".pagination .active").text();
+            var pageSize = 3;
+            var key = $("#key").val();
+
+            console.log(currentPage);
+            $.ajax({
+                url:"../question/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage) - 1,
+                    pageSize:pageSize,
+                    question:key,
+                },
+                success:function (data) {
+                    console.log(data);
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+
+                    //更新页码
+                    $(".pagination .active").prev().addClass("active");
+                    $(".pagination .active").next().removeClass("active");
+                    //判断边界
+                    if(data.hasPreviousPage === false){
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }
+                }
+            });
+        });
+
+        /**
+         * 为下一页注册事件
+         */
+        $(".pagination .page-link:last").bind("click", function () {
+            var currentPage = $(".pagination .active").text();
+            var pageSize = 3;
+            var key = $("#key").val();
+            var userType = $("#selectBox option:selected").val();
+
+            console.log(key, userType);
+            console.log(currentPage);
+            $.ajax({
+                url:"../question/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage) + 1,
+                    pageSize:pageSize,
+                    question:key,
+                },
+                success:function (data) {
+                    console.log(data);
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+                    //更新页码
+                    $(".pagination .active").next().addClass("active");
+                    $(".pagination .active").prev().removeClass("active");
+                    //没有下一页则关闭
+                    if(data.hasNextPage === false){
+                        $(".pagination li:last").addClass("disabled");
+                    }
+                    //有上一页则激活
+                    if(data.hasPreviousPage){
+                        $(".pagination li:first").removeClass("disabled");
+                    }
+
+                }
+            });
+        });
+
+        /**
+         * 给页码按钮注册事件
+         */
+        $(".pagination").on("click", ".page-num", function () {
+            var currentPage = $(this).text();
+            console.log(currentPage);
+            var pageSize = 3;
+            var key = $("#key").val();
+            var userType = $("#selectBox option:selected").val();
+            var thisObj = this;
+
+            $.ajax({
+                url:"../question/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage),
+                    pageSize:pageSize,
+                    question:key,
+                },
+                success:function (data) {
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+                    //更新页码
+                    $(".page-num").removeClass("active");
+                    $(thisObj).addClass("active");
+
+                    /**
+                     * 边界判断
+                     */
+                    //有上一页则激活
+                    if(data.hasPreviousPage){
+                        $(".pagination li:first").removeClass("disabled");
+                    }else {
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    //有下一页则激活
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }else{
+                        $(".pagination li:last").addClass("disabled");
+                    }
+                }
+            })
+        });
     });
 </script>
 </body>

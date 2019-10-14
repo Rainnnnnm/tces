@@ -118,6 +118,9 @@ public class UserController {
                 subject.login(token);
                 resultMap.put("data", "登录成功");
                 resultMap.put("status", 200);
+                //把用户信息放入session中
+                subject.getSession().setAttribute("currentUser",userService.getUserByCode(userCode));
+
             }catch (UnknownAccountException unknown){
                 LOGGER.debug("#####未知账户异常####");
                 LOGGER.debug("userCode: {}", token.getPrincipal());

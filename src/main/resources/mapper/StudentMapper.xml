@@ -14,17 +14,61 @@
         </collection>
     </resultMap>
 
+    <!--题目嵌套类型映射-->
+    <resultMap id="questionNestedType" type="com.gcxy.tces.entity.Question">
+        <id property="questionId" column="question_id"/>
+        <result property="question" column="question"/>
+        <result property="testType" column="test_type"/>
+        <association property="type" javaType="com.gcxy.tces.entity.Type">
+            <id property="typeId" column="type_id"/>
+            <result property="typeName" column="type_name"/>
+        </association>
+    </resultMap>
+
     <!--根据班级id查询课程和教师-->
     <select id="selectCourseTeacher" resultMap="courseNestedTeachMap">
-        select *
+        select c.course_id, c.course_name, u.user_ID, u.user_Name
         from user_course_clazz ucc join user u on ucc.user_id = u.user_ID
-            join course c on ucc.user_id = c.Course_ID
-        where ucc.clazz_id = #{cid}
+            join course c on ucc.course_Id = c.Course_ID
+        where ucc.clazz_id = #{cid} and ucc.course_id is not null
     </select>
 
-    <select id="selectClazzIdByUid" resultType="com.gcxy.tces.entity.Clazz">
-        SELECT Clazz_ID clazzId
-        from user_course_clazz
-        where user_id = #{uid}
+    <!--根据用户id查询所在班级的信息-->
+    <select id="selectClazzByUid" resultType="com.gcxy.tces.entity.Clazz">
+        select c.clazz_id clazzId, c.clazz_name clazzName
+        from clazz c, user_course_clazz ucc
+        where c.Clazz_ID = ucc.clazz_id and ucc.user_id = #{uid}
     </select>
+
+    <!--查询题目信息根据试卷类型-->
+    <select id="selectQuestionsByTestType" resultMap="questionNestedType">
+        select q.question_id, q.Question, q.test_type, t.type_name, t.type_id
+        from question q, type t
+        where q.type_id = t.type_id
+        where q.test_type = #{testType}
+    </select>
+
+    <!--插入评分详情-->
+    <insert id="insertScore" parameterType="com.gcxy.tces.entity.Score">
+        insert into score(teacher_id, course_id, single_score, user_type)
+              values(#{teacherId},#{courseId},#{singleScore},#{userType})
+    </insert>
+
+    <!--查询教师的成绩-->
+    <select id="selectGradesByTid" resultMap="gradeNestedCourseMap">
+        select c.Course_ID, c.Course_name, g.avg_score, g.grade_type, g.Grade_ID
+        from grade g, course c
+        where g.Course_ID = c.Course_ID and g.teacher_ID = #{tid}
+    </select>
+
+    <!--成绩嵌套课程映射-->
+    <resultMap id="gradeNestedCourseMap" type="com.gcxy.tces.entity.Grade">
+        <id property="gradeId" column="grade_id"/>
+        <result property="gradeType" column="grade_type"/>
+        <result property="avgScore" column="avg_score"/>
+        <association property="course" javaType="com.gcxy.tces.entity.Course">
+            <id property="courseId" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+        </association>
+    </resultMap>
 </mapper>

@@ -19,11 +19,16 @@
             <id column="type_id" property="typeId"></id>
             <result column="type_name" property="typeName"></result>
         </association>
+        <association property="user" javaType="com.gcxy.tces.entity.User">
+            <id property="userId" column="user_id"></id>
+            <result property="userName" column="user_name"></result>
+        </association>
     </resultMap>
 
     <!--根据id查询问题-->
     <select id="selectQuestionById" parameterType="String" resultMap="questionMap">
-        select * from question where question_id = #{questionId}
+        select u.user_Name,u.user_ID,t.*,q.* from question q join user u on q.user_ID = u.user_ID join type t on t.type_id = q.type_id
+        where question_id = #{questionId}
     </select>
 
 
@@ -32,7 +37,7 @@
     </insert>
 
     <update id="updateQuestion" parameterType="com.gcxy.tces.entity.Question">
-        update question set question = #{question} where question_id = #{questionId}
+        update question set question = #{question},test_type = #{testType} where question_id = #{questionId}
     </update>
 
     <delete id="deleteQuestion" parameterType="String">

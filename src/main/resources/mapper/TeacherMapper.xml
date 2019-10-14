@@ -26,9 +26,10 @@
 
     <!--查询未选择该课的老师-->
     <select id="selectTeacher" resultMap="teacherMap">
-        select u.user_name, u.user_id
-        from user u left join user_course_clazz ucc on u.user_ID = ucc.user_id
-        where u.user_type = 1 and (ucc.course_Id != #{course_Id} or ucc.course_Id is null)
+        select user_ID, user_name
+        from user
+        where user_ID
+         not in (select user_ID from user_course_clazz where course_Id = #{courseId})
     </select>
 
     <!--插入教师与课程的关联关系-->
