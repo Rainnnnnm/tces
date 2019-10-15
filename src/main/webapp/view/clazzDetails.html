@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线评教系统</title>
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="../css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="../css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet 自定义的样式-->
+    <link rel="stylesheet" href="../css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <style>
+        table{
+            display: table;
+            table-layout: fixed;
+        }
+
+        th,td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                        <div class="brand-text d-none d-lg-inline-block"><span>在线评教系统 </span><strong>后台</strong></div>
+                        <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+                        <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell-o"></i><span class="badge bg-red badge-corner">12</span></a>
+                            <ul aria-labelledby="notifications" class="dropdown-menu">
+                                <li><a rel="nofollow" href="#" class="dropdown-item">
+                                    <div class="notification">
+                                        <div class="notification-content"><i class="fa fa-envelope bg-green"></i>You have 6 new messages </div>
+                                        <div class="notification-time"><small>4 minutes ago</small></div>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item">
+                                    <div class="notification">
+                                        <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You have 2 followers</div>
+                                        <div class="notification-time"><small>4 minutes ago</small></div>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item">
+                                    <div class="notification">
+                                        <div class="notification-content"><i class="fa fa-upload bg-orange"></i>Server Rebooted</div>
+                                        <div class="notification-time"><small>4 minutes ago</small></div>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item">
+                                    <div class="notification">
+                                        <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You have 2 followers</div>
+                                        <div class="notification-time"><small>10 minutes ago</small></div>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>view all notifications                                            </strong></a></li>
+                            </ul>
+                        </li>
+                        <!-- Messages                        -->
+                        <li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">10</span></a>
+                            <ul aria-labelledby="notifications" class="dropdown-menu">
+                                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
+                                    <div class="msg-profile"> <img src="img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                                    <div class="msg-body">
+                                        <h3 class="h5">Jason Doe</h3><span>Sent You Message</span>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
+                                    <div class="msg-profile"> <img src="img/avatar-2.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                                    <div class="msg-body">
+                                        <h3 class="h5">Frank Williams</h3><span>Sent You Message</span>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
+                                    <div class="msg-profile"> <img src="img/avatar-3.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                                    <div class="msg-body">
+                                        <h3 class="h5">Ashley Wood</h3><span>Sent You Message</span>
+                                    </div></a></li>
+                                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Read all messages   </strong></a></li>
+                            </ul>
+                        </li>
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <!--<div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>-->
+                <div class="title">
+                    <h1 class="h4">admin</h1>
+                    <p>online</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="index.html"> <i class="icon-home"></i>主页 </a></li>
+                <li><a href="usermanage.html"> <i class="icon-grid"></i>用户管理 </a></li>
+                <li class="active"><a href="course.html"><i class="icon-interface-windows"></i>课程管理 </a></li>
+                <li><a href="department.html"> <i class="icon-padnote"></i>院系管理 </a></li>
+                <li><a href="clazz.html"> <i class="icon-form"></i>班级管理 </a></li>
+                <li><a href="evaluation.html"> <i class="icon-list"></i>评价指标 </a></li>
+            </ul>
+            <!--<span class="heading">Extras</span>-->
+            <!--<ul class="list-unstyled">-->
+            <!--<li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>-->
+            <!--<li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>-->
+            <!--<li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>-->
+            <!--<li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>-->
+            <!--</ul>-->
+        </nav>
+
+        <!--主体内容-->
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">课程详情</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">主页</a></li>
+                    <li class="breadcrumb-item"><a href="course.html">课程管理</a></li>
+                    <li class="breadcrumb-item active">课程详情</li>
+                </ul>
+            </div>
+            <!-- Forms Section-->
+            <section class="forms">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <!-- Form Elements -->
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-close">
+                                    <div class="dropdown">
+                                        <button id="save" btn-data="1" class="btn-success btn btn-sm" style="display: none">保存修改</button>
+                                    </div>
+                                </div>
+
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">课程信息</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="msgTab">
+                                            <thead>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th>课程名称:</th>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Basic Form-->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-close">
+                                    <div class="dropdown">
+                                        <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                                        <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                                    </div>
+                                </div>
+                                <div class="card-close">
+                                    <button id="selectStudent" class="btn-success btn btn-sm">+ 添加学生</button>
+                                </div>
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">学生</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover" id="clazzTab">
+                                        <thead>
+                                        <tr>
+                                            <th>姓名</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Horizontal Form-->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-close">
+                                    <button id="selectTeacher" class="btn-success btn btn-sm">+ 添加教师 </button>
+                                </div>
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">教师</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover" id="teacherTab">
+                                        <thead>
+                                        <tr>
+                                            <th>课程</th>
+                                            <th>教师</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page Footer-->
+            <!--<footer class="main-footer">-->
+            <!--<div class="container-fluid">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-6">-->
+            <!--<p>Your company &copy; 2017-2019</p>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 text-right">-->
+            <!--<p>Design by Bootstrapious.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</footer>-->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTeacherTitle">课程信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr style="text-align: center">
+                        <th>#</th>
+                        <th>课 程</th>
+                        <th>教 师</th>
+                        <th>操 作</th>
+                    </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>jack</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" type="button">添加</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+            <!--<button type="button" class="btn btn-success">+ 新增</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentTitle">学生信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr style="text-align: center">
+                        <th>#</th>
+                        <th>姓 名</th>
+                        <th>操 作</th>
+                    </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>jack</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" type="button">添加</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+            <!--<button type="button" class="btn btn-success">+ 新增</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript files-->
+<script src="../plugins/jquery/jquery-3.4.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- Main File-->
+<script src="../js/front.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+    $(function () {
+        reIndex($("#addTeacherModal table tr"));
+        //加载页面数据
+        loadCourseMessage();
+
+        //执行表格编辑处理器
+        tableEditHandler($("#msgTab"));
+
+        /**
+         * 给添加教师课程按钮添加
+         */
+        $("#selectTeacher").bind("click", function () {
+            var tbody = $("#addTeacherModal tbody");
+            //清空
+            tbody.empty();
+            //发送异步请求查询教师课程
+            $.ajax({
+                url:"../clazz/allCourses",
+                type:"post",
+                dataType:"json",
+                data:null,
+                success:function (data) {
+                    console.log(data);
+                    if(data == null || data.length <= 0){
+                        tbody.html("无数据");
+                    }else{
+                        //添加数据到表格中
+                        data.forEach(function (ctDO) {
+                            var trObj = $("<tr>\n" +
+                                "<th scope=\"row\">1</th>\n" +
+                                "<td>"+ctDO.courseName+"</td>\n" +
+                                "<td>"+ctDO.userName+"</td>\n" +
+                                "<td>\n" +
+                                "<button class=\"btn btn-info btn-sm\" btn-data='"+ctDO.courseId+"&"+ctDO.userId+"'>添加</button>\n" +
+                                "</td>\n" +
+                                "</tr>");
+                            tbody.append(trObj);
+                        })
+                    }
+                }
+            });
+            //把数据添加到模态框
+            //显示模态框
+            $("#addTeacherModal").modal("show");
+        });
+
+        /**
+         * 给添加学生按钮添加
+         */
+        $("#selectStudent").bind("click", function () {
+            var tbody = $("#addStudentModal tbody");
+            //清空
+            tbody.empty();
+            //发送异步请求查询教师课程
+            $.ajax({
+                url:"../clazz/freeStudents",
+                type:"post",
+                dataType:"json",
+                data:null,
+                success:function (data) {
+                    console.log(data);
+                    if(data == null || data.length <= 0){
+                        tbody.html("无数据");
+                    }else{
+                        //添加数据到表格中
+                        data.forEach(function (user) {
+                            var trObj = $("<tr>\n" +
+                                "<th scope=\"row\">1</th>\n" +
+                                "<td>"+user.userName+"</td>\n" +
+                                "<td>\n" +
+                                "<button class=\"btn btn-info btn-sm\" btn-data='"+user.userId+"'>添加</button>\n" +
+                                "</td>\n" +
+                                "</tr>");
+                            tbody.append(trObj);
+                        })
+                    }
+                }
+            });
+
+            //把数据添加到模态框
+            //显示模态框
+            $("#addStudentModal").modal("show");
+        });
+
+        /**
+         * 给每个添加按钮动态绑定事件.添加学生
+         */
+        $("#addStudentModal table").on("click", "button", function () {
+            var that = $(this);
+            //发送请求进行添加
+            $.ajax({
+                url: "../clazz/addStudent",
+                type: "post",
+                dataType: "json",
+                data: {
+                    clazzId:$("#save").attr("btn-data"),
+                    userId:that.attr("btn-data")
+                },
+                success: function (data) {
+                    console.log(data);
+                    $("#addStudentModal").modal("hide");
+                    alert(data.data);
+                    searchDetail($("#save").attr("btn-data"));
+                }
+            });
+        });
+
+        /**
+         * 查询所有展示的详细信息
+         */
+        function searchDetail(clazzId){
+            $.ajax({
+                type:"get",
+                url:"../clazz/describe",
+                dataType:"json",
+                data:{clazzId:clazzId},
+                success:function (data) {
+                    console.log(data);
+                    //动态添加数据到界面
+                    var clazzName = $("#msgTab tbody>tr:first>td:first");
+
+                    clazzName.html(data.clazzName);
+
+                    //加载班级信息
+                    loadStudentMsg(data.studentList);
+                    //加载教师信息
+                    loadTeacherMsg(data.courseList);
+                }
+            });
+        }
+
+        /**
+         * 给每个添加按钮动态绑定事件
+         */
+        $("#addTeacherModal table").on("click", "button", function () {
+            var that = $(this);
+            //发送请求进行添加
+            $.ajax({
+                url: "../clazz/addCourse",
+                type: "post",
+                dataType: "json",
+                data: {
+                    clazzId:$("#save").attr("btn-data"),
+                    ctId:that.attr("btn-data")
+                },
+                success: function (data) {
+                    console.log(data);
+                    $("#addTeacherModal").modal("hide");
+                    alert(data.data);
+                    searchDetail($("#save").attr("btn-data"));
+                }
+            });
+        });
+
+        /**
+         *  为保存按钮注册事件
+         */
+        $("#save").click(function () {
+            //获取表格的数据
+            var clazzName = $("#msgTab tbody>tr:first>td:first").text();
+            var clazzId = $("#save").attr("btn-data");
+
+
+            //发送异步请求更新数据
+            $.ajax({
+                url:"../clazz/update",
+                type:"post",
+                dataType:"json",
+                data:{
+                    clazzId:clazzId,
+                    clazzName:clazzName
+                },
+                success:function (data) {
+                    console.log(data);
+                    if(data.status === "1"){
+                        alert("修改成功");
+                        //隐藏保存按钮
+                        $("#save").hide();
+                    }else{
+                        alert("修改失败");
+                    }
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        /**
+         * 动态绑定学生移除按钮事件
+         */
+        $("#clazzTab").on("click", "button", function () {
+            var userId = $(this).attr("data");
+            var clazzId = $("#save").attr("btn-data");
+            var that = $(this).parent().parent();
+            $.ajax({
+                url:"../clazz/removeStudent",
+                type:"post",
+                dataType:"json",
+                data:{clazzId:clazzId, userId:userId},
+                success:function (data) {
+                    if(data.status === "1"){
+                        alert(data.data);
+                        that.remove();
+                    }else{
+                        alert(data.data);
+                    }
+                }
+            });
+        });
+
+        /**
+         * 动态绑定教师课程移除按钮事件
+         */
+        $("#teacherTab").on("click", "button", function () {
+            //获取教师id和课程id
+            var ctId = $(this).attr("data");
+            var clazzId = $("#save").attr("btn-data");
+            var that = $(this).parent().parent();
+            $.ajax({
+                url:"../clazz/removeCourse",
+                type:"get",
+                dataType:"json",
+                data:{clazzId:clazzId, ctId:ctId},
+                success:function (data) {
+                    if(data.status === "1"){
+                        alert(data.data);
+                        that.remove();
+                    }else{
+                        alert(data.data);
+                    }
+                }
+            });
+        });
+        /**
+         * 为登出按钮注册事件
+         */
+        $(".nav-item .logout").click(function (ev) {
+            //阻止事件默认行为
+            ev.preventDefault();
+            //发送退出登录ajax
+            $.ajax({
+                url:"../user/logout",
+                type:"get",
+                dataType:"json",
+                data:null,
+                success:function (data) {
+                    //退出登录失败
+                    if(data.status === 500){
+                        alert(data.data);
+                    }else{
+                        //退出登录成功跳转到登录界面
+                        window.location.href= "../view/login.html";
+                    }
+                }
+            });
+        });
+
+    });
+
+    /**
+     * 表格可编辑处理器
+     * @param tableObj 表格对象
+     */
+    function tableEditHandler(tableObj) {
+
+        if(tableObj == null){
+            tableObj = $("table");
+        }
+
+        tableObj.find("td").click(function(event){
+            //显示保存修改按钮
+            $("#save").show();
+            //td中已经有了input,则不需要响应点击事件
+            if($(this).children("input").length > 0)
+                return false;
+            var tdObj = $(this);
+            //得到当前文本内容
+            var preText = tdObj.html();
+            //创建一个文本框元素
+            var inputObj = $("<input type='text'/>");
+            //清空td中的所有元素
+            tdObj.html("");
+            //设置input元素属性
+            inputObj
+                .width(tdObj.width())
+                //设置文本框宽度与td相同
+                .height(tdObj.height())
+                .css({border:"0px",fontSize:"17px",font:"宋体"})
+                .val(preText)
+                //把创建的文本框插入到tdObj子节点的最后
+                .appendTo(tdObj)
+                //用trigger方法触发事件
+                .trigger("focus");
+
+            inputObj.bind("blur", function () {
+                var text = $(this).val();
+                //输入为空变回原来的值，否则变为新的值
+                if(text == null || text === ""){
+                    tdObj.html(preText);
+                } else{
+                    tdObj.html(text);
+                }
+            });
+
+            //监听input元素的键盘事件
+            inputObj.keyup(function(event){
+                var text = $(this).val();
+                //数据校验, 不正确则改变回原来的值
+                if(text == null || text === ""){
+                    text = preText;
+                }
+
+                if(13 === event.which) {//用户按下回车
+                    tdObj.html(text);
+                } else if(27 === event.which) {//ESC键
+                    tdObj.html(preText);
+                }
+            });
+
+            //已进入编辑状态后，不再处理click事件
+            inputObj.click(function(){
+                return false;
+            });
+        });
+    }
+
+
+
+
+    /**
+     * 获取url上的参数值
+     * @param name 参数名
+     * @returns {*} 返回对应参数名的值, null代表未找到
+     */
+    function getQueryString(name) {
+        if(name == null || name === ""){
+            return null;
+        }
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r != null){
+            return  unescape(r[2]);
+        }
+        return null;
+    }
+
+    /**
+     * 加载班级基本信息
+     */
+    function loadCourseMessage() {
+        //获取url上的uid参数值
+        var clazzId = getQueryString("cid");
+        //设置userId到button的自定义属性中
+        var btnObj = $("#save");
+        btnObj.attr("btn-data", clazzId);
+        //发送ajax获取数据并进行展示
+        $.ajax({
+            type:"get",
+            url:"../clazz/describe",
+            dataType:"json",
+            data:{clazzId:clazzId},
+            success:function (data) {
+                console.log(data);
+                //动态添加数据到界面
+                var clazzName = $("#msgTab tbody>tr:first>td:first");
+
+                clazzName.html(data.clazzName);
+
+                //加载班级信息
+                loadStudentMsg(data.studentList);
+                //加载教师信息
+                loadTeacherMsg(data.courseList);
+            }
+        });
+
+    }
+
+    /**
+     * 加载班级数据
+     * @param data 班级数据数组
+     */
+    function loadStudentMsg(data) {
+        var trObj;
+        var tbody = $("#clazzTab>tbody");
+        //清空tbody
+        tbody.empty();
+        //判断是否有数据
+        if(data == null || typeof(data) == "undefined" || data.length <= 0){
+            trObj = $("<tr><td colspan='2'>无数据</td></tr>");
+            tbody.append(trObj);
+            return;
+        }
+        data.forEach(function (ctDO) {
+            trObj = $("<tr>\n" +
+                "<td>"+ctDO.userName+"</td>\n" +
+                "<td><button class='btn btn-sm btn-danger' data='"+ctDO.userId+"'>移除</button></td>\n" +
+                "</tr>");
+
+            tbody.append(trObj);
+        });
+    }
+
+    /**
+     * 加载教师课程信息
+     * @param data 教师数据列表
+     */
+    function loadTeacherMsg(data) {
+        var trObj;
+        var tbody = $("#teacherTab>tbody");
+        //清空tbody
+        tbody.empty();
+        //判断是否有数据
+        if(data == null || typeof(data) == "undefined" || data.length <= 0){
+            trObj = $("<tr><td colspan='2'>无数据</td></tr>")
+            tbody.append(trObj);
+            return;
+        }
+        data.forEach(function (ctDO) {
+            trObj = $("<tr>\n" +
+                "<td>"+ctDO.courseName+"</td>\n" +
+                "<td>"+ctDO.userName+"</td>\n" +
+                "<td><button class='btn btn-sm btn-danger' data='"+ctDO.courseId+"&"+ctDO.userId+"'>移除</button></td>\n" +
+                "</tr>");
+
+            tbody.append(trObj);
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--班级管理、班级课程管理、评价指标管理-->
+<mapper namespace="com.gcxy.tces.mapper.ClazzMapper">
+    <!--模糊查询所有班级-->
+    <select id="selectClazz" parameterType="String" resultMap="clazzMap">
+        select * from clazz where clazz_name like "%"#{clazzName}"%"
+    </select>
+    <!--根据id查询班级-->
+    <select id="selectClazzName" parameterType="String" resultType="String">
+        select clazz_name from clazz where Clazz_ID = #{clazzId}
+    </select>
+    <resultMap id="clazzMap" type="com.gcxy.tces.entity.Clazz">
+        <id property="clazzId" column="clazz_Id"></id>
+        <result property="clazzName" column="clazz_name"></result>
+        <association property="department" javaType="com.gcxy.tces.entity.Department">
+            <id property="deptId" column="dept_id"></id>
+            <result property="deptName" column="dept_name"></result>
+        </association>
+    </resultMap>
+    <!--修改班级信息-->
+    <update id="updateClazz" parameterType="com.gcxy.tces.entity.Clazz">
+        update clazz set Clazz_name=#{clazzName} where Clazz_ID = #{clazzId}
+    </update>
+    <!--添加班级记录-->
+    <insert id="addClazz" parameterType="com.gcxy.tces.entity.Clazz">
+        insert into clazz(Clazz_name) values(#{clazzName})
+    </insert>
+    <!--删除班级-->
+    <delete id="deleteClazz" parameterType="String">
+        delete from clazz where clazz_id = #{clazzId}
+    </delete>
+
+    <!--班级课程管理-->
+
+    <!--查询这个班级的所有课程-->
+    <select id="selectCourseOfClazz" parameterType="String" resultType="com.gcxy.tces.entity.Course">
+        select c.Course_name,c.Course_ID from user_course_clazz cc join course c on c.Course_ID=cc.course_id where cc.clazz_id = #{clazzId}
+    </select>
+    <!--插入课程-->
+    <insert id="addCourseOfClazz">
+        insert into user_course_clazz(clazz_id,course_id,user_id) values (#{clazzId},#{courseId},#{userId})
+    </insert>
+
+    <!--删除课程-->
+    <delete id="deleteCourseOfClazz">
+        delete from user_course_clazz where course_id=#{courseId} and clazz_id=#{clazzId} and user_id=#{userId}
+    </delete>
+
+    <!--查询没有班级的学生-->
+    <select id="selectFreeStudent" resultMap="freeStudentMap">
+        select u.user_Name,u.user_ID from user u left join user_course_clazz cc on u.user_ID = cc.user_id
+        where u.user_type = 0 and cc.clazz_id is null
+    </select>
+    <resultMap id="freeStudentMap" type="com.gcxy.tces.entity.User">
+        <id column="user_id" property="userId"></id>
+        <result column="user_name" property="userName"></result>
+    </resultMap>
+
+    <!--班级添加学生-->
+    <insert id="addStudentToCLass">
+        insert into user_course_clazz(user_id, clazz_id) values (#{userId},#{clazzId})
+    </insert>
+
+    <!--为班级添加课程-->
+    <!--查询在user_course_clazz中教师课程关联了的记录-->
+    <select id="selectCourse" resultMap="ctDO">
+        select cc.course_Id,cc.user_id,c.Course_name,u.user_Name
+        from user_course_clazz cc join course c on cc.course_Id=c.Course_ID join user u on cc.user_id = u.user_ID
+        where cc.clazz_id is null
+    </select>
+    <resultMap id="ctDO" type="com.gcxy.tces.entity.CourseTeacherDO">
+        <id column="id" property="id"></id>
+        <result property="courseId" column="course_id"></result>
+        <result property="courseName" column="course_name"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="userName" column="user_name"></result>
+    </resultMap>
+
+    <!--根据班级查询学生-->
+    <select id="selectStudentByCid" parameterType="String" resultMap="ctDO">
+        select u.user_Name,u.user_ID
+        from user_course_clazz cc join user u on cc.user_id = u.user_ID
+        where clazz_id = #{clazzId} and cc.course_id is null
+    </select>
+
+    <!--根据班级查询教师班级-->
+    <select id="selectCourseByCid" parameterType="String" resultMap="ctDO">
+       select c.Course_name,c.Course_ID,u.user_Name,u.user_ID,cc.Id
+       from user_course_clazz cc join user u on cc.user_id = u.user_ID join course c on cc.course_Id = c.Course_ID
+       where cc.clazz_id = #{clazzId}
+    </select>
+
+    <!--根据班级id删除学生-->
+    <delete id="deleteStudentByCid" >
+        delete from user_course_clazz where user_id=#{userId} and clazz_id = #{clazzId}
+    </delete>
+</mapper>

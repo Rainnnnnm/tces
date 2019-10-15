@@ -266,12 +266,12 @@
                 <form id="addCourseForm">
                     <div class="form-group">
                         <label for="questionName">题目名称：</label>
-                        <input type="text" class="form-control" name="courseName" id="questionName" placeholder="请输题目名">
+                        <input type="text" class="form-control" name="question" id="questionName" placeholder="请输题目名">
                     </div>
 
                     <div class="form-group">
                         <label for="testType">试卷类型：</label>
-                        <select class="custom-select" id="testType" style="color: #adadad;">
+                        <select class="custom-select" name="testType" id="testType" style="color: #adadad;">
                             <option value='' disabled selected style='display:none;'>请选择</option>
                             <option style="color:black;" value="0">学生评价</option>
                             <option style="color: black" value="1">教师评价</option>
@@ -280,9 +280,7 @@
 
                     <div class="form-group">
                         <label for="questionType">题目类型：</label>
-                        <select class="custom-select" id="questionType" style="color: #adadad;">
-                            <option value='' disabled selected style='display:none;'>请选择</option>
-                            <option style="color:black;">精神建设类</option>
+                        <select id="questionType" name="typeId" class="custom-select" id="questionType" style="color: #adadad;">
                         </select>
                     </div>
                 </form>
@@ -295,6 +293,39 @@
     </div>
 </div>
 
+
+<!-- 新增按钮模态框Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalTitle">修改</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateQuestionForm">
+                    <div class="form-group">
+                        <label for="questionName">题目名称：</label>
+                        <input type="text" class="form-control" name="question" id="question">
+                        <label for="questionName">题目类型：</label>
+                        <select id="typeSelect"class="custom-select" name="testType" style="color: #adadad;">
+                            <option value="0">学生评价</option>
+                            <option value="1">教师评价</option>
+                        </select>
+                        <label for="questionName">出题人：</label>
+                        <input type="text" class="form-control" name="username" id="username">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button id="updateQuestion" type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 题目类型管理模态框Modal -->
 <div class="modal fade" id="batchAddModal" tabindex="-1" role="dialog" data-backdrop="static">
@@ -347,6 +378,35 @@
     $(function () {
 
         /**
+         * 给查询按钮添加事件
+         * 发送ajax请求
+         */
+        $("#query").click(function () {
+            $.ajax({
+                type:"post",
+                url:"../question/search",
+                dataType:"json",
+                data:{
+                    question:$("#key").val(),
+                    pageSize:3,
+                    pageNum:1
+                },
+                success:function (data) {
+                    console.log(data);
+                    //do dom操作
+                    //清空tbody
+                    $("tbody").empty();
+                    data.list.forEach(function (question) {
+                        //console.log(user);
+                        addDataToTable(question);
+                    });
+
+                    initPageSize(data);
+                }
+            });
+        });
+
+        /**
          * select框值改变时，调整其字体颜色
          */
         $("select").change(function () {
@@ -362,68 +422,47 @@
         });
 
         /**
-         * 给查询按钮添加事件
-         * 发送ajax请求
-         */
-        /*$("#query").click(function () {
-            $.ajax({
-                type:"post",
-                url:"../course/search",
-                dataType:"json",
-                data:{
-                    key:$("#key").val(),
-                    pageSize:3,
-                    pageNum:1
-                },
-                success:function (data) {
-                    console.log(data);
-                    //do dom操作
-                    //清空tbody
-                    $("tbody").empty();
-                    data.list.forEach(function (course) {
-                        //console.log(user);
-                        addDataToTable(course);
-                    });
-
-                    initPageSize(data);
-                }
-            });
-        });*/
-
-        /**
          * 首次进入页面查询全部的题目以及题型信息
          */
-        /*$.ajax({
+        $.ajax({
             type:"post",
-            url:"../course/all",
+            url:"../question/search",
             dataType:"json",
-            data:{pageSize:3, pageNum:1},
+            data:{question:"",pageSize:3, pageNum:1},
             success:function (data) {
                 console.log(data);
                 //do dom操作
                 //清空tbody
                 $("tbody").empty();
-                data.list.forEach(function (course) {
-                    addDataToTable(course);
+                data.list.forEach(function (question) {
+                    addDataToTable(question);
                 });
 
                 initPageSize(data);
             }
-        });*/
+        });
 
-
+        var i = 0 ;
         /**
          * 向table添加数据
          */
         function addDataToTable (data) {
+            if(data.testType === "0"){
+                data.testType = "学生评价"
+            }else{
+                data.testType = "教师评价"
+            }
+            i++;
             //创建一个tr
             var trObj = $("<tr>\n" +
-                "<th scope='row'>1</th>\n" +
-                "<td>"+data.courseName+"</td>\n" +
+                "<th scope='row'>i</th>\n" +
+                "<td>"+data.question+"</td>\n" +
+                "<td>"+data.type.typeName+"</td>\n" +
+                "<td>"+data.testType+"</td>\n" +
                 "<td>\n" +
-                " <a href='"+data.courseId+"' class='describe'>详情</a>\n" +
+                " <a href='"+data.questionId+"' class='describe'>详情</a>\n" +
                 " <span style='color: #adadad'> | </span>\n" +
-                " <a href='"+data.courseId+"' class='delete'>删除</a>\n" +
+                " <a href='"+data.questionId+"' class='delete'>删除</a>\n" +
                 "</td>\n" +
                 "</tr>");
 
@@ -435,12 +474,36 @@
         }
 
         /**
-         * 给导入按钮添加事件
+         * 给导入按钮添加事件,展示type
          */
         $("#add").click(function () {
             //弹出模态框，进行新增操作
+            $.ajax({
+                type:"post",
+                url:"../question/type",
+                dataType:"json",
+                data:null,
+                success:function (data) {
+                    console.log(data);
+                    //do dom操作
+                    //清空tbody
+                    // $("tbody").empty();
+                    $("#questionType").empty();
+                    var trObj = $("<option value='' disabled selected style='display:none;'>请选择</option>");
+                    $("#questionType").append(trObj);
+
+                    data.forEach(function (type) {
+                        setType(type);
+                    });
+                }
+            });
             $("#addModal").modal('show');
         });
+
+        function setType(data){
+            var trObj = $("<option value='"+data.typeId+"'>"+data.typeName+"</option>");
+            $("#questionType").append(trObj);
+        }
 
         /**
          * 给批量导入按钮添加事件
@@ -466,12 +529,80 @@
          * 给每个详情按钮添加事件
          */
         $("table").on("click", ".describe", function (event) {
-            //阻止默认行为
             event.preventDefault();
-            //do something
-            var cid = $(this).attr("href");
-            console.log("点击详情", cid);
-            window.location.href = "./coursedetails.html?cid="+cid;
+            var questionId = $(this).attr("href");
+            $.ajax({
+                type:"post",
+                url:"../question/getQuestion",
+                dataType:"json",
+                data:{questionId:questionId},
+                success:function (data) {
+                    console.log(data);
+                    //do dom操作
+                    //清空tbody
+                    if(data.testType==="0"){
+                        data.testType = "学生评价"
+                    }else{
+                        data.testType = "教师评价"
+                    }
+                    $("tbody").empty();
+                    $("#question").val(data.question);
+                    $("#username").val(data.user.userName);
+                    $("#testtypeu").val(data.testType);
+                    $("#updateQuestion").attr("dataId",data.questionId)
+                }
+            });
+            $("#updateModal").modal('show');
+        });
+
+        /**
+         * 修改问题
+         */
+        $("#updateModal button:last").click(function () {
+            // alert($("#updateQuestion").attr("dataId"));
+            // alert($("#question").val());
+            $.ajax({
+                url:"../question/update",
+                type:"post",
+                dataType:"json",
+                //传入原生表单对象构建一个FormData对象
+                data:{
+                    questionId:$("#updateQuestion").attr("dataId"),
+                    question:$("#question").val(),
+                    testType:$("#typeSelect").val()
+                },
+                //成功回调方法
+                success:function (data) {
+                    if(data.status === "1"){
+                        alert(data.data);
+                        $.ajax({
+                            type:"post",
+                            url:"../question/search",
+                            dataType:"json",
+                            data:{question:"",pageSize:3, pageNum:1},
+                            success:function (data) {
+                                console.log(data);
+                                //do dom操作
+                                //清空tbody
+                                $("tbody").empty();
+                                data.list.forEach(function (question) {
+                                    addDataToTable(question);
+                                });
+
+                                initPageSize(data);
+                            }
+                        });
+                    }else if(data.status === "0"){
+                        alert(data.data);
+                    }
+                    //关闭模态框
+                    $("#updateModal").modal("hide");
+                },
+                //ajax请求出现错误回调方法
+                error:function (err) {
+                    console.log(err);
+                }
+            });
         });
 
         /**
@@ -482,17 +613,17 @@
             //阻止默认行为
             event.preventDefault();
             //do something
-            var courseId = $(this).attr("href");
+            var questionId = $(this).attr("href");
             var that = $(this);
             //console.log("userId",userId);
             //弹出确认框，确认后进行删除
             $.ajax({
-                url:"../course/delete",
+                url:"../question/remove",
                 type:"post",
                 dataType:"json",
-                data:{cid:courseId},
+                data:{questionId:questionId},
                 success:function (data) {
-                    if(data.status === 200){
+                    if(data.status === "1"){
                         //删除这一行, 执行一个动画效果
                         console.log("执行删除动画");
                         //this默认绑定的是ajax的options参数对象，需要更改社会options的context
@@ -542,8 +673,9 @@
          */
         $("#addModal button:last").click(function () {
             var form = new FormData($("#addCourseForm")[0]);
+            console.log(form)
             $.ajax({
-                url:"../course/save",
+                url:"../question/add",
                 type:"post",
                 dataType:"json",
                 //传入原生表单对象构建一个FormData对象
@@ -552,9 +684,26 @@
                 contentType:false,
                 //成功回调方法
                 success:function (data) {
-                    if(data.status === 200){
+                    if(data.status === "1"){
                         alert(data.data);
-                    }else if(data.status === 500){
+                        $.ajax({
+                            type:"post",
+                            url:"../question/search",
+                            dataType:"json",
+                            data:{question:"",pageSize:3, pageNum:1},
+                            success:function (data) {
+                                console.log(data);
+                                //do dom操作
+                                //清空tbody
+                                $("tbody").empty();
+                                data.list.forEach(function (question) {
+                                    addDataToTable(question);
+                                });
+
+                                initPageSize(data);
+                            }
+                        });
+                    }else if(data.status === "0"){
                         alert(data.data);
                     }
                     //关闭模态框
@@ -591,6 +740,136 @@
             });
         });
 
+        /**
+         * 为上一页注册事件
+         */
+        $(".pagination .page-link:first").bind("click", function () {
+            var currentPage = $(".pagination .active").text();
+            var pageSize = 3;
+            var key = $("#key").val();
+
+            console.log(currentPage);
+            $.ajax({
+                url:"../question/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage) - 1,
+                    pageSize:pageSize,
+                    question:key,
+                },
+                success:function (data) {
+                    console.log(data);
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+
+                    //更新页码
+                    $(".pagination .active").prev().addClass("active");
+                    $(".pagination .active").next().removeClass("active");
+                    //判断边界
+                    if(data.hasPreviousPage === false){
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }
+                }
+            });
+        });
+
+        /**
+         * 为下一页注册事件
+         */
+        $(".pagination .page-link:last").bind("click", function () {
+            var currentPage = $(".pagination .active").text();
+            var pageSize = 3;
+            var key = $("#key").val();
+            var userType = $("#selectBox option:selected").val();
+
+            console.log(key, userType);
+            console.log(currentPage);
+            $.ajax({
+                url:"../question/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage) + 1,
+                    pageSize:pageSize,
+                    question:key,
+                },
+                success:function (data) {
+                    console.log(data);
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+                    //更新页码
+                    $(".pagination .active").next().addClass("active");
+                    $(".pagination .active").prev().removeClass("active");
+                    //没有下一页则关闭
+                    if(data.hasNextPage === false){
+                        $(".pagination li:last").addClass("disabled");
+                    }
+                    //有上一页则激活
+                    if(data.hasPreviousPage){
+                        $(".pagination li:first").removeClass("disabled");
+                    }
+
+                }
+            });
+        });
+
+        /**
+         * 给页码按钮注册事件
+         */
+        $(".pagination").on("click", ".page-num", function () {
+            var currentPage = $(this).text();
+            console.log(currentPage);
+            var pageSize = 3;
+            var key = $("#key").val();
+            var userType = $("#selectBox option:selected").val();
+            var thisObj = this;
+
+            $.ajax({
+                url:"../question/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage),
+                    pageSize:pageSize,
+                    question:key,
+                },
+                success:function (data) {
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+                    //更新页码
+                    $(".page-num").removeClass("active");
+                    $(thisObj).addClass("active");
+
+                    /**
+                     * 边界判断
+                     */
+                    //有上一页则激活
+                    if(data.hasPreviousPage){
+                        $(".pagination li:first").removeClass("disabled");
+                    }else {
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    //有下一页则激活
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }else{
+                        $(".pagination li:last").addClass("disabled");
+                    }
+                }
+            })
+        });
     });
 </script>
 </body>

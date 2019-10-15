@@ -259,10 +259,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addCourseForm">
+                <form id="addClazzForm">
                     <div class="form-group">
-                        <label for="addCourseName">班级名称：</label>
-                        <input type="text" class="form-control" name="courseName" id="addCourseName" placeholder="请输班级名">
+                        <label for="addClazzName">班级名称：</label>
+                        <input type="text" class="form-control" name="clazzName" id="addClazzName" placeholder="请输班级名">
                     </div>
                 </form>
             </div>
@@ -328,10 +328,10 @@
         $("#query").click(function () {
             $.ajax({
                 type:"post",
-                url:"../course/search",
+                url:"../clazz/search",
                 dataType:"json",
                 data:{
-                    key:$("#key").val(),
+                    clazzName:$("#key").val(),
                     pageSize:3,
                     pageNum:1
                 },
@@ -340,9 +340,9 @@
                     //do dom操作
                     //清空tbody
                     $("tbody").empty();
-                    data.list.forEach(function (course) {
+                    data.list.forEach(function (clazz) {
                         //console.log(user);
-                        addDataToTable(course);
+                        addDataToTable(clazz);
                     });
 
                     initPageSize(data);
@@ -351,20 +351,20 @@
         });
 
         /**
-         * 首次进入页面查询全部用户
+         * 首次进入页面查询全部班级
          */
         $.ajax({
             type:"post",
-            url:"../course/all",
+            url:"../clazz/search",
             dataType:"json",
-            data:{pageSize:3, pageNum:1},
+            data:{pageSize:3, pageNum:1,clazzName:""},
             success:function (data) {
                 console.log(data);
                 //do dom操作
                 //清空tbody
                 $("tbody").empty();
-                data.list.forEach(function (course) {
-                    addDataToTable(course);
+                data.list.forEach(function (clazz) {
+                    addDataToTable(clazz);
                 });
 
                 initPageSize(data);
@@ -379,11 +379,11 @@
             //创建一个tr
             var trObj = $("<tr>\n" +
                 "<th scope='row'>1</th>\n" +
-                "<td>"+data.courseName+"</td>\n" +
+                "<td>"+data.clazzName+"</td>\n" +
                 "<td>\n" +
-                " <a href='"+data.courseId+"' class='describe'>详情</a>\n" +
+                " <a href='"+data.clazzId+"' class='describe'>详情</a>\n" +
                 " <span style='color: #adadad'> | </span>\n" +
-                " <a href='"+data.courseId+"' class='delete'>删除</a>\n" +
+                " <a href='"+data.clazzId+"' class='delete'>删除</a>\n" +
                 "</td>\n" +
                 "</tr>");
 
@@ -436,7 +436,7 @@
             //do something
             var cid = $(this).attr("href");
             console.log("点击详情", cid);
-            window.location.href = "./coursedetails.html?cid="+cid;
+            window.location.href = "./clazzDetails.html?cid="+cid;
         });
 
         /**
@@ -447,17 +447,17 @@
             //阻止默认行为
             event.preventDefault();
             //do something
-            var courseId = $(this).attr("href");
+            var clazzId = $(this).attr("href");
             var that = $(this);
             //console.log("userId",userId);
             //弹出确认框，确认后进行删除
             $.ajax({
-                url:"../course/delete",
+                url:"../clazz/delete",
                 type:"post",
                 dataType:"json",
-                data:{cid:courseId},
+                data:{clazzId:clazzId},
                 success:function (data) {
-                    if(data.status === 200){
+                    if(data.status === "1"){
                         //删除这一行, 执行一个动画效果
                         console.log("执行删除动画");
                         //this默认绑定的是ajax的options参数对象，需要更改社会options的context
@@ -503,12 +503,12 @@
         }
 
         /**
-         * 添加单个用户
+         * 添加班级
          */
         $("#addModal button:last").click(function () {
-            var form = new FormData($("#addCourseForm")[0]);
+            var form = new FormData($("#addClazzForm")[0]);
             $.ajax({
-                url:"../course/save",
+                url:"../clazz/add",
                 type:"post",
                 dataType:"json",
                 //传入原生表单对象构建一个FormData对象
@@ -517,9 +517,31 @@
                 contentType:false,
                 //成功回调方法
                 success:function (data) {
-                    if(data.status === 200){
+                    if(data.status === "1"){
                         alert(data.data);
-                    }else if(data.status === 500){
+                        $.ajax({
+                            type:"post",
+                            url:"../clazz/search",
+                            dataType:"json",
+                            data:{
+                                clazzName:$("#key").val(),
+                                pageSize:3,
+                                pageNum:1
+                            },
+                            success:function (data) {
+                                console.log(data);
+                                //do dom操作
+                                //清空tbody
+                                $("tbody").empty();
+                                data.list.forEach(function (clazz) {
+                                    //console.log(user);
+                                    addDataToTable(clazz);
+                                });
+
+                                initPageSize(data);
+                            }
+                        });
+                    }else if(data.status === "0"){
                         alert(data.data);
                     }
                     //关闭模态框
@@ -555,6 +577,136 @@
                     }
                 }
             });
+        });
+        /**
+         * 为上一页注册事件
+         */
+        $(".pagination .page-link:first").bind("click", function () {
+            var currentPage = $(".pagination .active").text();
+            var pageSize = 3;
+            var key = $("#key").val();
+
+            console.log(currentPage);
+            $.ajax({
+                url:"../clazz/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage) - 1,
+                    pageSize:pageSize,
+                    clazzName:key,
+                },
+                success:function (data) {
+                    console.log(data);
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+
+                    //更新页码
+                    $(".pagination .active").prev().addClass("active");
+                    $(".pagination .active").next().removeClass("active");
+                    //判断边界
+                    if(data.hasPreviousPage === false){
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }
+                }
+            });
+        });
+
+        /**
+         * 为下一页注册事件
+         */
+        $(".pagination .page-link:last").bind("click", function () {
+            var currentPage = $(".pagination .active").text();
+            var pageSize = 3;
+            var key = $("#key").val();
+            var userType = $("#selectBox option:selected").val();
+
+            console.log(key, userType);
+            console.log(currentPage);
+            $.ajax({
+                url:"../clazz/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage) + 1,
+                    pageSize:pageSize,
+                    clazzName:key,
+                },
+                success:function (data) {
+                    console.log(data);
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+                    //更新页码
+                    $(".pagination .active").next().addClass("active");
+                    $(".pagination .active").prev().removeClass("active");
+                    //没有下一页则关闭
+                    if(data.hasNextPage === false){
+                        $(".pagination li:last").addClass("disabled");
+                    }
+                    //有上一页则激活
+                    if(data.hasPreviousPage){
+                        $(".pagination li:first").removeClass("disabled");
+                    }
+
+                }
+            });
+        });
+
+        /**
+         * 给页码按钮注册事件
+         */
+        $(".pagination").on("click", ".page-num", function () {
+            var currentPage = $(this).text();
+            console.log(currentPage);
+            var pageSize = 3;
+            var key = $("#key").val();
+            var userType = $("#selectBox option:selected").val();
+            var thisObj = this;
+
+            $.ajax({
+                url:"../clazz/search",
+                type:"post",
+                dataType:"json",
+                data:{
+                    pageNum:parseInt(currentPage),
+                    pageSize:pageSize,
+                    clazzName:key,
+                },
+                success:function (data) {
+                    $("tbody").empty();
+                    data.list.forEach(function (user) {
+                        addDataToTable(user);
+                    });
+                    //更新页码
+                    $(".page-num").removeClass("active");
+                    $(thisObj).addClass("active");
+
+                    /**
+                     * 边界判断
+                     */
+                    //有上一页则激活
+                    if(data.hasPreviousPage){
+                        $(".pagination li:first").removeClass("disabled");
+                    }else {
+                        $(".pagination li:first").addClass("disabled");
+                    }
+
+                    //有下一页则激活
+                    if(data.hasNextPage){
+                        $(".pagination li:last").removeClass("disabled");
+                    }else{
+                        $(".pagination li:last").addClass("disabled");
+                    }
+                }
+            })
         });
 
     });
