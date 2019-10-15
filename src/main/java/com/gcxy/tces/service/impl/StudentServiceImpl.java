@@ -15,7 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Rain
@@ -60,8 +65,54 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public boolean openEvaluate() {
+    public boolean openEvaluate(ServletContext application) {
+        List<Type> types = studentMapper.selectAllType();
+        List<Question> stuEvaList = new ArrayList<>();
+        List<Question> teaEvaList = new ArrayList<>();
+        //创建一个随机数对象
+        Random random = new Random();
+        if(types == null || types.size() <= 0){
+            throw new RuntimeException("没有任何题目类型");
+        }
+        /*
+            抽出学生评价表的题目
+         */
+        for (Type type : types){
+            int count = studentMapper.selectQuestionCountByTypeId(type.getTypeId(), "0");
+            if(count <= 0){
+                //throw new RuntimeException("无对应的题目");
+                LOGGER.debug("无对应的题目，typeId：{}", type.getTypeId());
+                continue;
+            }
+            //生成一个随机数, 范围[0,count - 1)
+            int index = random.nextInt(count - 1);
+            //随机抽取的题目
+            Question question = studentMapper.selectQuestionByIndex(index, type.getTypeId(), "0");
+            //把题目加入试卷集合
+            stuEvaList.add(question);
 
+        }
+        /*
+            抽出教师评价表的题目
+         */
+        for (Type type : types){
+            int count = studentMapper.selectQuestionCountByTypeId(type.getTypeId(), "1");
+            if(count <= 0){
+                //throw new RuntimeException("无对应的题目");
+                LOGGER.debug("无对应的题目，typeId：{}", type.getTypeId());
+                continue;
+            }
+            //生成一个随机数, 范围[0,count - 1)
+            int index = random.nextInt(count - 1);
+            //随机抽取的题目
+            Question question = studentMapper.selectQuestionByIndex(index, type.getTypeId(), "1");
+            //把题目加入试卷集合
+            teaEvaList.add(question);
+        }
+
+        //把两张生成的试卷放入application域中
+        application.setAttribute("teaEvaList", teaEvaList);
+        application.setAttribute("stuEvaList", stuEvaList);
         return true;
     }
 }

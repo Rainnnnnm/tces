@@ -5,6 +5,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -51,5 +53,5 @@ public interface StudentService {
      * 开启评价通道
      * @return boolean
      */
-    boolean openEvaluate();
+    boolean openEvaluate(ServletContext context);
 }

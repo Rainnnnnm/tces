@@ -71,4 +71,23 @@
             <result property="courseName" column="course_name"/>
         </association>
     </resultMap>
+
+    <!--查出所有类型id-->
+    <select id="selectAllType" resultType="com.gcxy.tces.entity.Type">
+        select type_id typeId from type
+    </select>
+
+    <!--查询该类型对应的题目数量-->
+    <select id="selectQuestionCountByTypeId" resultType="java.lang.Integer">
+        select count(2) from type t, question q
+        where t.type_id = q.type_id and t.type_id = #{typeId} and q.test_type = #{testType}
+    </select>
+
+    <!--查出一个类型中的某道题-->
+    <select id="selectQuestionByIndex" resultMap="questionNestedType">
+        select t.type_id, q.question_id, q.Question, q.test_type, t.type_name
+        from question q, type t
+        where q.type_id = t.type_id and t.type_id = #{typeId} and q.test_type = #{testType} limit #{index},1
+    </select>
+
 </mapper>

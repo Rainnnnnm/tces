@@ -21,4 +21,14 @@ public interface StudentMapper {
     int insertScore(Score score);
 
     List<Grade> selectGradesByTid(String tid);
+
+    List<Type> selectAllType();
+
+    /**
+     * 根据typeId和testType查询对应题目的数量
+     * @return int count
+     */
+    int selectQuestionCountByTypeId(@Param("typeId")String typeId, @Param("testType")String testType);
+
+    Question selectQuestionByIndex(@Param("index") int index, @Param("typeId") String typeId, @Param("testType")String testType);
 }

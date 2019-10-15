@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,9 +121,30 @@ public class StudentController {
      * 开启评价通道
      * @return json
      */
-    public Object openEvaluate(){
-        studentService.openEvaluate();
+    public Object openEvaluate(HttpServletRequest request){
+        studentService.openEvaluate(request.getServletContext());
         return null;
+    }
+
+    /**
+     * 关闭投票通道
+     * @return json
+     */
+    public Object closeEvaluate(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            ServletContext servletContext = request.getServletContext();
+            //清空application域中的试卷
+            servletContext.removeAttribute("teaEvaList");
+            servletContext.removeAttribute("stuEvaList");
+            resultMap.put("status", 200);
+            resultMap.put("data", "关闭评价通道成功");
+        }catch (Exception e){
+            resultMap.put("status", 500);
+            resultMap.put("data", "关闭评价通道失败");
+        }
+
+        return resultMap;
     }
 
     /**
